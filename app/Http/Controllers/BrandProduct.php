@@ -12,6 +12,9 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Ex_Brand;
+use App\Imports\Im_Brand;
 
 session_start();
 
@@ -30,12 +33,22 @@ class BrandProduct extends Controller
         $this->AuthLogin();
         // $all_brand_product = DB::table('tbl_brand')->get();
 
-        $all_brand_product = Brand::all();
+        $all_brand_product = Brand::where('brand_storage','0')->orderBy('brand_id','desc')->get();
         // $all_brand_product = Brand::orderBy('brand_id','desc')->get();  //xếp ds giảm dần
         // $all_brand_product = Brand::orderBy('brand_id','desc')->take(1)->get(); //dùng take để show số lượng sp mong muốn
         // $all_brand_product = Brand::orderBy('brand_id','desc')->paginate(2);    //phân trang
 
         return view('admin.brand.all_brand')->with(compact('all_brand_product'));
+    }
+
+    public function import_cate(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new Im_Brand, $path);
+        return back();
+    }
+
+    public function export_cate(){
+        return Excel::download(new Ex_Brand,'brand_product.xlsx');
     }
 
     public function add_brand_product(){
@@ -71,22 +84,22 @@ class BrandProduct extends Controller
         $brand->brand_status = $data['brand_status'];
         $brand->save();
 
-        Toastr::success('Thêm thương hiệu sản phẩm thành công','Thành công');
+        Toastr::success('Thêm thương hiệu sản phẩm thành công','');
         return Redirect::to('add-brand-product');
     }
 
     public function unactive_brand($brand_pro_slug){
         $this->AuthLogin();
         Brand::where('brand_slug', $brand_pro_slug)->update(['brand_status'=>1]);
-        Toastr::success('Kích hoạt thương hiệu sản phẩm thành công','Thành công');
-        return Redirect::to('all-brand-product');
+        Toastr::success('Kích hoạt thương hiệu sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function active_brand($brand_pro_slug){
         $this->AuthLogin();
         Brand::where('brand_slug', $brand_pro_slug)->update(['brand_status'=>0]);
-        Toastr::success('Bỏ kích hoạt thương hiệu sản phẩm thành công','Thành công');
-        return Redirect::to('all-brand-product');
+        Toastr::success('Bỏ kích hoạt thương hiệu sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function edit_brand_product($brand_pro_slug){
@@ -95,8 +108,7 @@ class BrandProduct extends Controller
 
         $edit_brand_product = Brand::where('brand_slug', $brand_pro_slug)->get();
         // $edit_brand_product = Brand::find($brand_pro_slug);
-        $manager_brand_product = view('admin.brand.edit_brand')->with('edit_brand_product', $edit_brand_product);
-        return view('admin_layout')->with('admin.brand.edit_brand', $manager_brand_product);
+        return view('admin.brand.edit_brand')->with(compact('edit_brand_product'));
     }
 
     public function update_brand_product(Request $request, $brand_id){
@@ -109,18 +121,39 @@ class BrandProduct extends Controller
         $brand->brand_desc = $data['brand_desc'];
         $brand->save();
 
-        Toastr::success('Cập nhật thương hiệu sản phẩm thành công','Thành công');
+        Toastr::success('Cập nhật thương hiệu sản phẩm thành công','');
         return Redirect::to('all-brand-product');
     }
 
     public function delete_brand_product($brand_id){
         $this->AuthLogin();
         $del_brand = Brand::find($brand_id);
-        $del_brand->delete();
-        Toastr::success('Xóa thương hiệu sản phẩm thành công','Thành công');
-        return Redirect::to('all-brand-product');
+        // $del_brand->delete();
+        $del_brand->brand_storage = '1';
+        $del_brand->save();
+        Toastr::success('Xóa thương hiệu sản phẩm thành công','');
+        return redirect()->back();
     }
-    //End Admin 
+
+    public function brand_storage(){
+        $this->AuthLogin();
+
+        $storage = Brand::where('brand_storage','1')->orderBy('brand_id','desc')->get();
+        return view('admin.brand.storage')->with(compact('storage'));
+    }
+
+    public function restore_brand($brand_id){
+        $this->AuthLogin();
+        $restore = Brand::find($brand_id);
+        $restore->brand_storage = '0';
+        $restore->save();
+        Toastr::success('Khôi phục thương hiệu sản phẩm thành công','');
+        return redirect()->back();
+    }
+
+//End Admin 
+
+
 
     public function show_brand(Request $request, $brand_slug){
         $cat = Category::where('category_status','1')->orderBy('category_id','desc')->get();

@@ -12,8 +12,8 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
 
-use App\Imports\ExcelImports;
-use App\Exports\ExcelExports;
+use App\Imports\Im_Cate;
+use App\Exports\Ex_Cate;
 use Maatwebsite\Excel\Facades\Excel;
 
 session_start();
@@ -31,8 +31,18 @@ class CategoryProduct extends Controller
 
     public function all_category_product(){
         $this->AuthLogin();
-        $all_cat = Category::all();
+        $all_cat = Category::where('category_storage','0')->orderBy('category_id','desc')->get();
         return view('admin.category.all_category')->with(compact('all_cat'));
+    }
+
+    public function import_cate(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new Im_Cate, $path);
+        return back();
+    }
+
+    public function export_cate(){
+        return Excel::download(new Ex_Cate ,'category_product.xlsx');
     }
 
     public function add_category_product(){
@@ -63,29 +73,28 @@ class CategoryProduct extends Controller
         $category->category_status = $data['cat_status'];
         $category->save();
 
-        Toastr::success('Thêm danh mục sản phẩm thành công','Thành công');
+        Toastr::success('Thêm danh mục sản phẩm thành công','');
         return Redirect::to('add-category-product');
     }
 
     public function unactive_category($cat_slug){
         $this->AuthLogin();
         Category::where('category_slug', $cat_slug)->update(['category_status'=>1]);
-        Toastr::success('Kích hoạt danh mục sản phẩm thành công','Thành công');
-        return Redirect::to('all-category-product');
+        Toastr::success('Kích hoạt danh mục sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function active_category($cat_slug){
         $this->AuthLogin();
         Category::where('category_slug', $cat_slug)->update(['category_status'=>0]);
-        Toastr::success('Bỏ kích hoạt danh mục sản phẩm thành công','Thành công');
-        return Redirect::to('all-category-product');
+        Toastr::success('Bỏ kích hoạt danh mục sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function edit_category_product($cat_slug){
         $this->AuthLogin();
         $edit_category_product = Category::where('category_slug', $cat_slug)->get();
-        $manager_category_product = view('admin.category.edit_category')->with('edit_category_product', $edit_category_product);
-        return view('admin_layout')->with('admin.category.edit_category', $manager_category_product);
+        return view('admin.category.edit_category')->with(compact('edit_category_product'));
     }
 
     public function update_category_product(Request $request, $cat_id){
@@ -98,17 +107,35 @@ class CategoryProduct extends Controller
         $category->category_desc = $data['cat_desc'];
         $category->save();
 
-        Toastr::success('Cập nhật danh mục sản phẩm thành công','Thành công');
+        Toastr::success('Cập nhật danh mục sản phẩm thành công','');
         return Redirect::to('all-category-product');
     }
 
     public function delete_category_product($cat_id){
         $this->AuthLogin();
         $del_cat = Category::find($cat_id);
-        $del_cat->delete();
-        Toastr::success('Xóa danh mục sản phẩm thành công','Thành công');
-        return Redirect::to('all-category-product');
+        $del_cat->category_storage = '1';
+        $del_cat->save();
+        Toastr::success('Xóa danh mục sản phẩm thành công','');
+        return redirect()->back();
     }
+
+    public function category_storage(){
+        $this->AuthLogin();
+
+        $storage = Category::where('category_storage','1')->orderBy('category_id','desc')->get();
+        return view('admin.category.storage')->with(compact('storage'));
+    }
+
+    public function restore_category($category_id){
+        $this->AuthLogin();
+        $restore = Category::find($category_id);
+        $restore->category_storage = '0';
+        $restore->save();
+        Toastr::success('Khôi phục danh mục sản phẩm thành công','');
+        return redirect()->back();
+    }
+
     //End Admin
 
     
@@ -205,15 +232,5 @@ class CategoryProduct extends Controller
         return view('pages.category.show_cat')
             ->with(compact('cat_pro','brand_pro','type_pro','feature_pro', 'cat_by_id', 'cat_name', 'url_canonical'));
             // 'min_price', 'max_price'));
-    }
-
-    public function import_cate(Request $request){
-        $path = $request->file('file')->getRealPath();
-        Excel::import(new ExcelImports, $path);
-        return back();
-    }
-
-    public function export_cate(){
-        return Excel::download(new ExcelExports ,'category_product.xlsx');
     }
 }

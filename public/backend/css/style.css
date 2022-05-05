@@ -11,8 +11,8 @@ p {margin: 0;}
 
 html, body{
 	font-family: 'PT Sans', sans-serif;
-    font-size: 100%;
-  	overflow-x: hidden;
+  font-size: 100%;
+  overflow-x: hidden;
 	background: #fff;
 }
 body a{
@@ -152,7 +152,7 @@ button#showLeftPush:hover {
 	transition: all 0.3s ease;
 }
 .cbp-spmenu-push div#page-wrapper {
-    margin: 0 0 0 13.5em;
+  margin: 0 0 0 14.5em;
 	transition:.5s all;
 	-webkit-transition:.5s all;
 	-moz-transition:.5s all;
@@ -1451,16 +1451,71 @@ section#tables  p {
 }
 .tables .table > thead > tr > th, .tables .table > tbody > tr > th, .tables .table > tfoot > tr > th, .tables .table > thead > tr > td, .tables .table > tbody > tr > td, .tables .table > tfoot > tr > td {
     padding: 13px;
-	border-top: 1px solid #E0E0E0;
+	  border-top: 1px solid #E0E0E0;
 }
 .bs-example {
-    margin-top: 2em;
+    /* margin-top: 2em; */
 }
 .table-hover > tbody > tr:hover {
     background-color: #E8E6E6;
 }
 /*--//table--*/
+
+/* order details */
+.tables .w3-res-tb.order-detail{
+  margin-top: 1em;
+  margin-bottom: 3em;
+}
+.tables .order-left{
+  border: 2px dashed #777777;
+  border-radius: 25px;
+  margin-left: 50px;
+  padding: 20px 10px 140px 10px;
+}
+.tables .order-right{
+  border: 2px dashed #777777;
+  border-radius: 25px;
+  margin-left: 50px;
+  padding: 20px 10px 0px;
+}
+.tables h5 {
+  font-size: 1.1em;
+  margin-bottom: 1em;
+  color: #777777;
+}
+
+/* //order details */
+
+/* Storage */
+.tables .luutru {
+  font-size: 16px;
+  /* color: #0174df; */
+}
+
+.tables .luutru i{
+  font-size: 13px;
+  margin-right: 5px;
+}
+
+.tables a.storage{  
+  background-color: #fe9a2e;
+  border: 1px solid #fe9a2e;
+  border-radius: 12px;
+  padding: 7px 12px;
+  margin-bottom: 20px;
+  color: #fff;
+}
+
+.tables a.storage:hover{ 
+  background-color: #fe642e;
+  border: 1px solid #fe642e;
+}
+/* //Storage */
+
 /*--forms--*/
+.forms {
+    margin-top: 2em;
+}
 .forms h4 {
     font-size: 1.3em;
     color: #6F6F6F;
@@ -1489,9 +1544,9 @@ section#tables  p {
     background-color: #F2B33F;
     color: #fff;
     padding: .5em 1.5em;
-	border: none;
-	outline:none;
-	border-radius: inherit;
+    border: none;
+    outline:none;
+    border-radius: inherit;
 }
 .inline-form.widget-shadow {
     margin-top: 2em;
@@ -1661,7 +1716,7 @@ button.note-color-btn {
 }
 .error-page {
     background: #fff;
-	padding:2em 0;
+	  padding:2em 0;
     text-align: center;
     -webkit-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
     -moz-box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
@@ -1683,8 +1738,8 @@ form.search-form {
 }
 .error-page p {
     letter-spacing: 1px;
-	width:40%;
-	margin: 30px auto 0; 
+    width:40%;
+    margin: 30px auto 0; 
     line-height: 28px;
     color: #444;
 }
@@ -1748,10 +1803,10 @@ form.search-form {
     margin: 0em 0em 1.5em 0em;
 }
 .login-page input.user {
-    background: url(../images/user.png)no-repeat 8px 16px #fff;
+    background: url(../images/user.png) no-repeat 8px 16px #fff;
 }
 .login-page input.lock {
-    background: url(../images/lock.png)no-repeat 8px 16px #fff;
+    background: url(../images/lock.png) no-repeat 8px 16px #fff;
 }
 .login-page label.checkbox {
     margin: 0 0 0 1.3em;
@@ -2128,14 +2183,14 @@ p.creating {
     margin: 0em 0 1.5em 0;
 }
 .signup-page input[type="email"]{
-    background: url(../images/mail.png)no-repeat 8px 16px #fff;
+    background: url(../images/mail.png) no-repeat 8px 16px #fff;
 	background-size: 20px;
 }
 .signup-page input[type="text"] {
-    background: url(../images/user.png)no-repeat 8px 16px #fff;
+    background: url(../images/user.png) no-repeat 8px 16px #fff;
 }
 .signup-page input[type="password"] {
-    background: url(../images/lock.png)no-repeat 8px 16px #fff;
+    background: url(../images/lock.png) no-repeat 8px 16px #fff;
 }
 .signup-page input[type="text"]:focus ,.signup-page input[type="email"]:focus,.signup-page input[type="password"]:focus,.login-page input[type="email"]:focus,.login-page input[type="password"]:focus{
     border-color: #337ab7;
@@ -5109,7 +5164,7 @@ figure.icons,.weather-text {
 	    letter-spacing: 1px;
 }
 .weather_w3_inner_info{
-    background: url(../images/weather.jpg)no-repeat center;
+    background: url(../images/weather.jpg) no-repeat center;
     background-size: cover;
     -webkit-background-size: cover;
     -moz-background-size: cover;
@@ -5454,7 +5509,7 @@ figure.icons,.weather-text {
 
 /*-- User profile --*/
 .malorum-top {
-    background: url(../images/weather.jpg)no-repeat;
+    background: url(../images/weather.jpg) no-repeat;
 	background-size:cover;
     min-height: 258px;
 }
@@ -5467,7 +5522,7 @@ figure.icons,.weather-text {
     box-shadow: 0px 0px 5px -2px rgba(0,0,0,0.75);
 }
 span.malorum-pro {
-    background: url(../images/img1.png)no-repeat;
+    background: url(../images/img1.png) no-repeat;
     width: 100px;
     height: 100px;
     display: inline-block;
@@ -5847,7 +5902,7 @@ i.fa.fa-facebook.profile-icon {
 }
 .single-bottom ul li input[type="checkbox"]:checked+label span:first-child:before {
     content: "";
-    background: url(../images/tick.png)no-repeat;
+    background: url(../images/tick.png) no-repeat;
     position: absolute;
     left: 1px;
     top: 2px;
@@ -6268,7 +6323,7 @@ i.icon_13{
 }
 .single-bottom ul li input[type="checkbox"]:checked+label span:first-child:before {
 	content: "";
-    background: url(../images/tick.png)no-repeat;
+    background: url(../images/tick.png) no-repeat;
     position: absolute;
     left: 1px;
     top: 2px;
@@ -6406,7 +6461,7 @@ h4.asd label {
 	padding-bottom:4px;
 }
 .text-success {
-  color:#00ACED;
+  color:#04B404;
 }
 .text-danger {
   color: #f25656;
@@ -6629,10 +6684,10 @@ h4.asd label {
 	.header-left {
 		width: 52%;
 	}
-	.cbp-spmenu-push div#page-wrapper {
+	/* .cbp-spmenu-push div#page-wrapper {
 		margin:0 0 0 14.5em;
 		padding: 5em 1em 2em;
-	}
+	} */
 	.sidebar ul li {
 		margin-bottom: 0.8em;
 	}
@@ -7984,7 +8039,7 @@ h4.asd label {
 		float: none;
 	}
 	.signup-page input[type="text"] {
-		background: url(../images/user.png)no-repeat 8px 10px #fff;
+		background: url(../images/user.png) no-repeat 8px 10px #fff;
 	}
 	.login-page h2.title1, .signup-page h2.title1 {
 		padding: .8em 1em;
@@ -8423,11 +8478,11 @@ h4.asd label {
 		padding: 10px 15px 10px 37px;
 	}
 	.signup-page input[type="email"] {
-		background: url(../images/mail.png)no-repeat 8px 10px #fff;
+		background: url(../images/mail.png) no-repeat 8px 10px #fff;
 		background-size: 20px;
 	}
 	.signup-page input[type="password"] {
-		background: url(../images/lock.png)no-repeat 8px 10px #fff;
+		background: url(../images/lock.png) no-repeat 8px 10px #fff;
 	}
 	.forgot a {
 		font-size: 0.9em;
@@ -8523,6 +8578,24 @@ h4.asd label {
 }
 /*--//responsive-design---*/
 
+/* Dashboard */
+.tables input.lockq{
+  background-color: #0174df;
+  border: 1px solid #0174df;
+  border-radius: 5px;
+  padding: 5px 10px;
+  margin: 10px 0px;
+  color: #fff;
+  font-size: 15px;
+}
+
+.tables input.lockq:hover{
+  background-color: #013adf;
+  border: 1px solid #013adf;
+}
+
+/* //Dashboard */
+
 .main-page.login-page {
   width: 450px;
   margin: 0 auto;
@@ -8538,17 +8611,49 @@ a.add{
   background-color: #0174df;
   border: 1px solid #0174df;
   border-radius: 12px;
-  padding: 5px 10px;
+  padding: 7px 12px;
   margin-bottom: 20px;
   color: #fff;
 }
 
-button.add{
+a.add:hover{
+  background-color: #013adf;
+  border: 1px solid #013adf;
+}
+
+button.add_coupon{
   background-color: #0174df;
   border: 1px solid #0174df;
   border-radius: 12px;
-  padding: 5px 10px;
+  padding: 6px 10px;
   margin-bottom: 20px;
+  color: #fff;
+}
+
+button.add_coupon:hover{
+  background-color: #013adf;
+  border: 1px solid #013adf;
+}
+
+a.send{
+  /* background-color: #04b431;
+  border: 1px solid #04b431;
+  border-radius: 12px;
+  padding: 7px 12px;
+  margin-bottom: 20px;
+  color: #fff; */
+  padding: 7px 12px;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 14px;
+  text-decoration: none;
+}
+
+a.send:hover{
+  /* background-color: #088a29;
+  border: 1px solid #088a29; */
+  background-color: #0174df;
+  border: 1px solid #0174df;
   color: #fff;
 }
 
@@ -8585,12 +8690,14 @@ a.add-gallery {
 
 a.add-gallery:hover{
   background-color: #0174df;
+  border: 1px solid #0174df;
   color: #fff;
 }
 
 a.active.view {
   font-size: 18px;
   color: #0489b1;
+  margin-right: 3px;
 }
 
 a.active.edit {
@@ -8599,7 +8706,7 @@ a.active.edit {
 }
 
 a.active.delete {
-  font-size: 18px;
+  font-size: 20px;
 }
 
 button.delete-gallery{
@@ -8636,7 +8743,7 @@ button.close {
 }
 
 #modalAdd .modal-dialog {
-  width: 55%;
+  /* width: 55%; */
 }
 
 .modal-top {
@@ -8676,7 +8783,6 @@ button.btn.btn-search {
     list-style: inside;
 }
 
-div.tables{
-  margin-top: -30px;
+div.tables {
+  margin-top: 2em;
 }
-

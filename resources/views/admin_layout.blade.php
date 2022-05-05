@@ -7,6 +7,7 @@
     <meta name="keywords" content="Glance Design Dashboard Responsive web template, Bootstrap Web Templates, Flat Web Templates, Android Compatible web template, 
     SmartPhone Compatible web template, free WebDesigns for Nokia, Samsung, LG, SonyEricsson, Motorola web design" />
     <!-- Seo -->
+    <meta name="csrf-token" content="{{csrf_token()}}">
     <link rel="canonical" href="http://localhost:8080/websiteNoiThat/dashboard">
     <!-- //Seo -->
     
@@ -42,6 +43,11 @@
 
     <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <!-- //Toast -->
+
+    <!-- Datepicker -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+    <!-- //Datepicker -->
 
     <!-- chart -->
     <script src="{{asset('public/backend/js/Chart.js')}}"></script>
@@ -162,6 +168,12 @@
                                 </a>
                             </li>
                             <li class="treeview">
+                                <a href="{{URL::to('/all-comment')}}">
+                                    <i class="fa fa-comments"></i>
+                                    <span>Bình luận</span>
+                                </a>
+                            </li>
+                            <li class="treeview">
                                 <a href="{{URL::to('/all-coupon')}}">
                                     <i class="fa fa-ticket"></i>
                                     <span>Mã giảm giá</span>
@@ -179,12 +191,6 @@
                                     <span>Khách hàng</span>
                                 </a>
                             </li>
-                            <!-- <li class="treeview">
-                                <a href="{{URL::to('/all-product')}}">
-                                    <i class="fa fa-bar-chart-o"></i>
-                                    <span>Thống kê</span>
-                                </a>
-                            </li> -->
                         </ul>
                     </div>
                     <!-- /.navbar-collapse -->
@@ -300,13 +306,71 @@
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 {!! Toastr::message() !!}
 
+<!-- Datepicker -->
+    <script type="text/javascript">
+        $(function(){
+            // Dashboard
+            $('#datepicker1').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "dd/mm/yy",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+            $('#datepicker2').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "dd/mm/yy",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+
+            // Coupon
+            $('#start_cou').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "dd/mm/yy",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+            $('#end_cou').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "dd/mm/yy",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+        });
+
+
+        $(document).ready(function(){
+            $('#btn-filter').click(function(){
+                var from_date = $('#datepicker1').val();
+                var to_date = $('#datepicker2').val();
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{url('/filter-by-date')}}",
+                    method:"POST",
+                    dataType:"JSON",
+                    data:{from_date:from_date,to_date:to_date,_token:_token},
+                    
+                    success:function(data)
+                        {
+                            // chart.setData(data);
+                        }   
+                });
+
+            });
+        })
+    </script>
+<!-- Datepicker -->
+
 <!-- Slug -->
-<script type="text/javascript">
- 
-    function ChangeToSlug()
-        {
+    <script type="text/javascript">
+        function ChangeToSlug(){
             var slug;
-         
+            
             //Lấy text từ thẻ input title 
             slug = document.getElementById("slug").value;
             slug = slug.toLowerCase();
@@ -430,14 +494,14 @@
             // });
         });
     </script>
-    <!-- //Gallery -->
+<!-- //Gallery -->
 
-	<!-- Alert -->
+<!-- Alert -->
 	<script>
 		$('div.alert').delay(3000).slideUp();
 	</script>
     
-    <!-- Search -->
+<!-- Search -->
     <script>
         function search() {
             var input, filter, table, tr, td, i, txtValue;
@@ -458,39 +522,40 @@
             }
         }
     </script>
+<!-- //Search -->
 
-	<!-- Classie --><!-- for toggle left push menu script -->
-		<script src="{{asset('public/backend/js/classie.js')}}"></script>
-		<script>
-			var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
-				showLeftPush = document.getElementById( 'showLeftPush' ),
-				body = document.body;
-				
-			showLeftPush.onclick = function() {
-				classie.toggle( this, 'active' );
-				classie.toggle( body, 'cbp-spmenu-push-toright' );
-				classie.toggle( menuLeft, 'cbp-spmenu-open' );
-				disableOther( 'showLeftPush' );
-			};
-			
+<!-- Classie --><!-- for toggle left push menu script -->
+    <script src="{{asset('public/backend/js/classie.js')}}"></script>
+    <script>
+        var menuLeft = document.getElementById( 'cbp-spmenu-s1' ),
+            showLeftPush = document.getElementById( 'showLeftPush' ),
+            body = document.body;
+            
+        showLeftPush.onclick = function() {
+            classie.toggle( this, 'active' );
+            classie.toggle( body, 'cbp-spmenu-push-toright' );
+            classie.toggle( menuLeft, 'cbp-spmenu-open' );
+            disableOther( 'showLeftPush' );
+        };
+        
 
-			function disableOther( button ) {
-				if( button !== 'showLeftPush' ) {
-					classie.toggle( showLeftPush, 'disabled' );
-				}
-			}
-		</script>
-	<!-- //Classie --><!-- //for toggle left push menu script -->
+        function disableOther( button ) {
+            if( button !== 'showLeftPush' ) {
+                classie.toggle( showLeftPush, 'disabled' );
+            }
+        }
+    </script>
+<!-- //Classie --><!-- //for toggle left push menu script -->
 		
-    <!-- CKEditor -->
+<!-- CKEditor -->
     <script src="{{asset('public/backend/ckeditor/ckeditor.js')}}"></script>
     <script>
         CKEDITOR.replace('ckeditor');
         CKEDITOR.replace('ckeditor1');
     </script>
-    <!-- //CKEditor -->
+<!-- //CKEditor -->
     
-    <!-- Validator -->
+<!-- Validator -->
     <script src="{{asset('public/backend/js/jquery.form-validator.min.js')}}"></script>
     <script type="text/javascript">
         $.validate({
@@ -504,11 +569,45 @@
         //name="user-email" data-validation = "email"
         //repeat: data-validation="confirmation" data-validation-confirm="user-email"
     </script>
-    <!-- Validator -->
-	<!--scrolling js-->
+<!-- //Validator -->
+
+<!-- Order detail -->
+    <script type="text/javascript">
+        $('.order_details').change(function(){
+            var order_status = $(this).val();
+            var order_id = $(this).children(":selected").attr("id");
+            var _token = $('input[name="_token"]').val();
+            
+            //lay ra so luong
+            quantity = [];
+            $("input[name='product_sales_quantity']").each(function(){
+                quantity.push($(this).val());
+            });
+            
+            //lay ra product id
+            order_product_id = [];
+            $("input[name='order_product_id']").each(function(){
+                order_product_id.push($(this).val());
+            });
+
+            $.ajax({
+                url : "{{url('/update-order-qty')}}",
+                method: 'POST',
+                data:{order_status:order_status, order_id:order_id, quantity:quantity, 
+                    order_product_id:order_product_id, _token:_token},
+                success:function(data){
+                    alert('Thay đổi tình trạng đơn hàng thành công');
+                    location.reload();
+                }
+            });
+        });
+    </script>
+<!-- //Order detail -->
+
+<!--scrolling js-->
 	<script src="{{asset('public/backend/js/jquery.nicescroll.js')}}"></script>
 	<script src="{{asset('public/backend/js/scripts.js')}}"></script>
-	<!--//scrolling js-->
+<!--//scrolling js-->
 	
 	<!-- side nav js -->
 	<script src="{{asset('public/backend/js/SidebarNav.min.js')}}" type='text/javascript'></script>

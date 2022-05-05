@@ -4,8 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Coupon;
 use App\Models\Customer;
+use App\Models\Gallery;
+use App\Models\Order;
+use App\Models\OrderDetails;
+use App\Models\Payment;
 use App\Models\Product;
+use App\Models\Rating;
+use App\Models\Shipping;
 use App\Models\Type;
 use Illuminate\Support\Str;
 use Carbon\Carbon;
@@ -30,7 +37,7 @@ class CustomerController extends Controller
 
     public function all_customer(){
         $this->AuthLogin();
-        $all_customer = Customer::all();
+        $all_customer = Customer::where('customer_storage','0')->orderBy('customer_id','desc')->get();
         return view('admin.customer.all_customer')->with(compact('all_customer'));
     } 
 
@@ -71,13 +78,38 @@ class CustomerController extends Controller
     public function delete_customer($customer_id){
         $this->AuthLogin();
         $del_cus = Customer::find($customer_id);
-        $del_cus->delete();
-        Session::put('messageCustomer','Xóa khách hàng thành công');
-        return Redirect::to('all-customer');
+        $del_cus->customer_storage = '1';
+        $del_cus->save();
+        Toastr::success('Xóa khách hàng thành công','');
+        return redirect()->back();
+    }
+
+    public function customer_storage(){
+        $this->AuthLogin();
+
+        $storage = Customer::where('customer_storage','1')->orderBy('customer_id','desc')->get();
+        return view('admin.customer.storage')->with(compact('storage'));
+    }
+
+    public function restore_customer($customer_id){
+        $this->AuthLogin();
+        $restore = Customer::find($customer_id);
+        $restore->customer_storage = '0';
+        $restore->save();
+        Toastr::success('Khôi phục khách hàng thành công','');
+        return redirect()->back();
     }
 // End Admin
 
 
+    public function AuthLoginCus(){
+        $cus_id = Session::get('customer_id');
+        if($cus_id){
+            return Redirect::to('/');
+        }else{
+            return Redirect::to('/dang-nhap')->send();
+        }
+    }
 
     public function autocomplete_ajax(Request $request){
         $data = $request->all();
@@ -151,13 +183,7 @@ class CustomerController extends Controller
             ->join('tbl_customers', 'tbl_shipping.customer_id', '=', 'tbl_customers.customer_id')
             ->where('tbl_customers.customer_id', $customer_id)->get();
 
-        // $cart = Session::get('cart');
-        // if ($cart){
-        //     return view('pages.cart.payment')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'shipping', 'url_canonical'));
-        // }
-        // else{
-            return view('pages.account.login')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical'));
-        // }
+        return view('pages.account.login')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical'));
     }
 
     public function login_customer(Request $request){
@@ -195,6 +221,8 @@ class CustomerController extends Controller
     }
 
     public function change_pass(Request $request){
+        $this->AuthLoginCus();
+
         $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
         $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','desc')->get();
         $type_pro = Type::where('type_status','1')->orderBy('type_id','desc')->get();
@@ -206,6 +234,8 @@ class CustomerController extends Controller
     }
 
     public function confirm_pass(Request $request){
+        $this->AuthLoginCus();
+
         $this->validate($request, [
             'old_pass' => 'required',
             'new_pass' => 'required|min:5',
@@ -227,19 +257,16 @@ class CustomerController extends Controller
             if (md5($data['new_pass']) != $reset->customer_password){
                 $reset->customer_password = md5($data['new_pass']);
                 $reset->save();
-                Toastr::success('Đổi mật khẩu thành công','Thành công');
+                Toastr::success('Đổi mật khẩu thành công','');
 
                 return redirect('doi-mat-khau');
-                // ->with('messageChange', 'Đổi mật khẩu thành công');
             }else{
-                Toastr::error('Bạn vừa nhập mật khẩu hiện tại. Vui lòng nhập mật khẩu khác','Thất bại');
+                Toastr::error('Bạn vừa nhập mật khẩu hiện tại. Vui lòng nhập mật khẩu khác','');
                 return redirect()->back();
-                    // ->with('errorChange', 'Bạn vừa nhập mật khẩu hiện tại. Vui lòng nhập mật khẩu khác');
             }
         }else{
-            Toastr::error('Mật khẩu sai. Vui lòng nhập lại mật khẩu hiện tại','Thất bại');
+            Toastr::error('Mật khẩu sai. Vui lòng nhập lại mật khẩu hiện tại','');
             return redirect()->back();
-                // ->with('errorChange', 'Mật khẩu sai. Vui lòng nhập lại mật khẩu hiện tại');
         }
     }
 
@@ -276,9 +303,8 @@ class CustomerController extends Controller
         if($cus){
             $count_customer = $cus->count();
             if($count_customer == 0){
-                Toastr::error('Email chưa được đăng ký','Thất bại');
+                Toastr::error('Email chưa được đăng ký','');
                 return redirect()->back();
-                // ->with('errorReset','Email chưa được đăng ký');
             }else{
                 $token_random = Str::random(6);
                 $customer = Customer::find($customer_id);
@@ -296,9 +322,8 @@ class CustomerController extends Controller
                     $message->from($data['email'], $title_mail);
                 });
 
-                Toastr::success('Gửi mail thành công, vui lòng kiểm tra mail của bạn','Thành công');
+                Toastr::success('Gửi mail thành công, vui lòng kiểm tra mail của bạn','');
                 return redirect()->back();
-                // ->with('messageReset', 'Gửi mail thành công, vui lòng kiểm tra mail của bạn');
             }
         }
     }
@@ -341,18 +366,130 @@ class CustomerController extends Controller
             $reset->customer_token = $token_random;
             $reset->save();
 
-            Toastr::success('Cập nhật mật khẩu thành công','Thành công');
+            Toastr::success('Cập nhật mật khẩu thành công','');
             return redirect('dang-nhap');
-            // ->with('messageNew', 'Cập nhật mật khẩu thành công');
         }else{
-            Toastr::error('Vui lòng nhập lại email vì link quá hạn','Thất bại');
+            Toastr::error('Vui lòng nhập lại email vì link quá hạn','');
             return redirect('quen-mat-khau');
-            // ->with('errorNew', 'Vui lòng nhập lại email vì link quá hạn');
         }
     }
 
     public function logout(Request $request){
+        $this->AuthLoginCus();
+
         Session::flush();
         return Redirect::to('/');
+    }
+
+    public function history_order(Request $request){
+        $this->AuthLoginCus();
+
+        $url_canonical = $request->url();
+        $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
+        
+        $order = Order::where('customer_id', Session::get('customer_id'))->orderBy('order_id','desc')->limit(10)->get();
+        
+        return view('pages.history.history_order')->with(compact('cat_pro','url_canonical', 'order'));
+    }
+
+    public function view_history(Request $request, $orderCode){
+        $this->AuthLoginCus();
+
+        // menu
+        $url_canonical = $request->url();
+        $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
+        
+        // chi tiết sản phẩm
+        $order_details = OrderDetails::with('product')->where('order_code',$orderCode)->get();
+        
+        // Thông tin giao hàng
+        $order = Order::where('order_code',$orderCode)->first();
+        
+        $customer_id = $order->customer_id;
+        $shipping_id = $order->shipping_id;
+        $payment_id = $order->payment_id;
+        $order_status = $order->order_status;
+        
+        $customer = Customer::where('customer_id',$customer_id)->first();
+        $shipping = Shipping::where('shipping_id',$shipping_id)->first();
+        $payment = Payment::where('payment_id',$payment_id)->first();
+        
+        // Đánh giá sao
+        foreach($order_details as $key => $value){
+            $product_id = $value->product_id;
+            $ord_detail = $value->details_id;
+        }
+        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
+            ->where('product_id', $product_id)->where('ord_detail_id', $ord_detail)->first();
+
+        // Tính tổng tiền
+        $money = Order::where('order_code', $orderCode)->first();
+        $coupon = Coupon::where('coupon_code', $money->order_coupon)->first();
+
+
+        // foreach($order_details_product as $key => $order_d){
+
+        // 	$product_coupon = $order_d->product_coupon;
+        // }
+        // if($product_coupon != 'no'){
+        // 	$coupon = Coupon::where('coupon_code',$product_coupon)->first();
+        // 	$coupon_condition = $coupon->coupon_condition;
+        // 	$coupon_number = $coupon->coupon_number;
+        // }else{
+        // 	$coupon_condition = 2;
+        // 	$coupon_number = 0;
+        // }
+        
+        return view('pages.history.view_history')
+            ->with(compact('cat_pro','url_canonical', 'order', 'order_details', 'shipping', 'payment',
+            'cus_rating','money','coupon'));
+    }
+
+    public function order_details_product(Request $request, $orderCode, $pro_slug) {
+        $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
+        $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','desc')->get();
+        $type_pro = Type::where('type_status','1')->orderBy('type_id','desc')->get();
+        
+        // Seo  
+        $url_canonical = $request->url();
+
+        // tên sp trong banner
+        $pro_name = Product::where('product_slug',$pro_slug)->limit(1)->get();
+
+        // Chi tiết sản phẩm
+        $details_pro = DB::table('tbl_product')
+            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
+            ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
+            ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
+            ->where('tbl_product.product_slug',$pro_slug)->get();
+
+        foreach($details_pro as $key => $value){
+            $product_id = $value->product_id;
+        }
+
+        $gallery = Gallery::where('product_id', $product_id)->get();
+
+        $rating = Rating::where('product_id', $product_id)->avg('rating');  //lấy trung bình số sao
+        $rating = round($rating);   //làm tròn
+
+        // Đánh giá
+        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
+            ->where('product_id', $product_id)->orderBy('rating_id','desc')->first();
+
+        
+        // Bình luận
+        $order_product = OrderDetails::with('product')->where('product_id', $product_id)->first();
+        $cus_name = Customer::where('customer_id', Session::get('customer_id'))->first();
+
+        // Sản phẩm nổi bật theo số sao đánh giá
+        $related_pro = DB::table('tbl_product')
+            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')           
+            ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
+            ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
+            ->orderBy('tbl_product.avg_star','desc')->whereNotIn('tbl_product.product_slug', [$pro_slug])->get();
+
+        return view('pages.product.show_details')
+            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'pro_name', 'details_pro', 
+            'gallery', 'rating', 'cus_rating', 'orderCode', 'order_product', 'cus_name', 'related_pro'));
     }
 }

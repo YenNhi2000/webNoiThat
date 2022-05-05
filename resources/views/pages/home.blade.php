@@ -101,7 +101,7 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <ul class="stars">
+                                            <!-- <ul class="stars">
                                                 <li>
                                                     <a href="#">
                                                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -127,6 +127,26 @@
                                                         <i class="fa fa-star-half-o" aria-hidden="true"></i>
                                                     </a>
                                                 </li>
+                                            </ul> -->
+                                            <ul class="list-inline" title="Average Rating">
+                                                       
+                                                @php
+                                                    $ratingg = round($pro->avg_star);
+                                                @endphp
+                                                
+
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    @php
+                                                        if($i <= $ratingg){
+                                                            $color = 'color:#ffcc00;';
+                                                        }
+                                                        else {
+                                                            $color = 'color:#ccc;';
+                                                        }
+                                                    @endphp
+                                                
+                                                    <li title="star_rating" style="{{$color}};" class="rating"> &#9733; </li>
+                                                @endfor
                                             </ul>
                                         </div>
                                         <div class="googles single-item hvr-outline-out">
@@ -190,7 +210,7 @@
                                                                     @endif
                                                                 </div>
                                                             </div>
-                                                            <ul class="stars">
+                                                            <!-- <ul class="stars">
                                                                 <li>
                                                                     <a href="#">
                                                                         <i class="fa fa-star" aria-hidden="true"></i>
@@ -216,6 +236,26 @@
                                                                         <i class="fa fa-star-o" aria-hidden="true"></i>
                                                                     </a>
                                                                 </li>
+                                                            </ul> -->
+                                                            <ul class="list-inline" title="Average Rating">
+                                                       
+                                                                @php
+                                                                    $ratingg = round($pro->avg_star);
+                                                                @endphp
+                                                                
+
+                                                                @for($i = 1; $i <= 5; $i++)
+                                                                    @php
+                                                                        if($i <= $ratingg){
+                                                                            $color = 'color:#ffcc00;';
+                                                                        }
+                                                                        else {
+                                                                            $color = 'color:#ccc;';
+                                                                        }
+                                                                    @endphp
+                                                                
+                                                                    <li title="star_rating" style="{{$color}};" class="rating"> &#9733; </li>
+                                                                @endfor
                                                             </ul>
                                                         </div>
                                                         <div class="googles single-item hvr-outline-out">

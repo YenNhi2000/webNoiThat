@@ -5,7 +5,7 @@ namespace App\Imports;
 use App\Models\Category;
 use Maatwebsite\Excel\Concerns\ToModel;
 
-class ExcelImports implements ToModel
+class Im_Cate implements ToModel
 {
     /**
     * @param array $row

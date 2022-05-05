@@ -1,7 +1,7 @@
 @extends('admin_layout')
 @section('admin_content')
 
-<div class="tables" style="margin-top: -30px;">
+<div class="tables">
     <!-- <h2 class="title1">Danh sách thương hiệu sản phẩm</h2> -->
     <div class="bs-example widget-shadow" data-example-id="hoverable-table"> 
         <h4 class="text-center text-uppercase">Danh sách thương hiệu sản phẩm</h4>
@@ -62,6 +62,7 @@
                     </div>
                 </div> -->
                 <a href="{{url('/add-brand-product')}}" class="add">Thêm mới</a>
+                <a href="{{url('/brand-storage')}}" class="storage">Lưu trữ</a>
             </div>
             <div class="col-sm-4"></div>
             <!-- <div class="col-sm-3">
@@ -85,8 +86,7 @@
                     <th>Tên thương hiệu</th>
                     <th>Slug</th>
                     <th>Trạng thái</th>
-                    <th style="width:30px;"></th>
-                    <th style="width:30px;"></th>
+                    <th style="width:70px;"></th>
                 </tr> 
             </thead>    
             <tbody> 
@@ -114,8 +114,6 @@
                         <a href="{{URL::to('/edit-brand-product/'.$brand_pro->brand_slug)}}" class="active edit" >
                             <i class="fa fa-pencil-square-o text-success text-active" title="Chỉnh sửa"></i>
                         </a>
-                    </td>
-                    <td>
                         <a href="{{URL::to('/delete-brand-product/'.$brand_pro->brand_id)}}" class="active delete" onclick="return confirm('Bạn có muốn xóa thương hiệu này không?')">
                             <i class="fa fa-times text-danger text" title="Xóa"></i>
                         </a>
@@ -124,6 +122,27 @@
                 @endforeach
             </tbody> 
         </table>
+
+<!-- import data -->
+        <div class="row">
+            <form action="{{url('import-brand')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="col-sm-3">
+                    <input type="file" name="file" accept=".xlsx"><br>
+                </div>
+                <div class="col-sm-1">
+                    <input type="submit" value="Import" name="import_csv" title="Import file Excel" class="btn btn-warning">
+                </div>
+            </form>
+
+<!-- export data -->
+            <form action="{{url('export-brand')}}" method="POST">
+                @csrf
+                <div class="col-sm-1">
+                    <input type="submit" value="Export" name="export_csv" title="Export file Excel" class="btn btn-success">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

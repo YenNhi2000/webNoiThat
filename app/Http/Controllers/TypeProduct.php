@@ -11,6 +11,10 @@ use App\Models\Product;
 use App\Models\Type;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
+use App\Exports\Ex_Type;
+use App\Imports\Im_Type;
+
 session_start();
 
 class TypeProduct extends Controller
@@ -26,9 +30,18 @@ class TypeProduct extends Controller
 
     public function all_type_product(){
         $this->AuthLogin();
-        $all_type_product = Type::all();
-        $manager_type_product = view('admin.type.all_type')->with('all_type_product', $all_type_product);
-        return view('admin_layout')->with('admin.type.all_type', $manager_type_product);
+        $all_type_product = Type::where('type_storage','0')->orderBy('type_id','desc')->get();
+        return view('admin.type.all_type')->with(compact('all_type_product'));
+    }
+
+    public function import_cate(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new Im_Type, $path);
+        return back();
+    }
+
+    public function export_cate(){
+        return Excel::download(new Ex_Type,'type_product.xlsx');
     }
 
     public function add_type_product(){
@@ -59,29 +72,28 @@ class TypeProduct extends Controller
         $type->type_status = $data['type_status'];
         $type->save();
 
-        Toastr::success('Thêm loại sản phẩm thành công','Thành công');
+        Toastr::success('Thêm loại sản phẩm thành công','');
         return Redirect::to('all-type-product');
     }
 
     public function unactive_type($type_pro_slug){
         $this->AuthLogin();
         Type::where('type_slug', $type_pro_slug)->update(['type_status'=>1]);
-        Toastr::success('Kích hoạt loại sản phẩm thành công','Thành công');
-        return Redirect::to('all-type-product');
+        Toastr::success('Kích hoạt loại sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function active_type($type_pro_slug){
         $this->AuthLogin();
         Type::where('type_slug', $type_pro_slug)->update(['type_status'=>0]);
-        Toastr::success('Bỏ kích hoạt loại sản phẩm thành công','Thành công');
-        return Redirect::to('all-type-product');
+        Toastr::success('Bỏ kích hoạt loại sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function edit_type_product($type_pro_slug){
         $this->AuthLogin();
         $edit_type_product = Type::where('type_slug', $type_pro_slug)->get();
-        $manager_type_product = view('admin.type.edit_type')->with('edit_type_product', $edit_type_product);
-        return view('admin_layout')->with('admin.type.edit_type', $manager_type_product);
+        return view('admin.type.edit_type')->with(compact('edit_type_product'));
     }
 
     public function update_type_product(Request $request, $type_id){
@@ -94,17 +106,35 @@ class TypeProduct extends Controller
         $type->type_desc = $data['type_desc'];
         $type->save();
 
-        Toastr::success('Cập nhật loại sản phẩm thành công','Thành công');
+        Toastr::success('Cập nhật loại sản phẩm thành công','');
         return Redirect::to('all-type-product');
     }
 
     public function delete_type_product($type_id){
         $this->AuthLogin();
         $del_type = Type::find($type_id);
-        $del_type->delete();
-        Toastr::success('Xóa loại sản phẩm thành công','Thành công');
-        return Redirect::to('all-type-product');
+        $del_type->type_storage = '1';
+        $del_type->save();
+        Toastr::success('Xóa loại sản phẩm thành công','');
+        return redirect()->back();
     }
+
+    public function type_storage(){
+        $this->AuthLogin();
+
+        $storage = Type::where('type_storage','1')->orderBy('type_id','desc')->get();
+        return view('admin.type.storage')->with(compact('storage'));
+    }
+
+    public function restore_type($type_id){
+        $this->AuthLogin();
+        $restore = Type::find($type_id);
+        $restore->type_storage = '0';
+        $restore->save();
+        Toastr::success('Khôi phục loại sản phẩm thành công','');
+        return redirect()->back();
+    }
+
     //End Admin
     
 

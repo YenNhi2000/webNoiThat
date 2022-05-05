@@ -10,6 +10,7 @@ use App\Models\Category;
 use App\Models\Product;
 use App\Models\Type;
 use App\Models\Gallery;
+use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Redirect;
 
 session_start();
@@ -100,7 +101,7 @@ class GalleryController extends Controller
                 $gallery->save();
             }
         }
-        Session::put('message', 'Thêm thư viện ảnh thành công');
+        Toastr::success('Thêm thư viện ảnh thành công', '');
         return redirect()->back();
     }
 

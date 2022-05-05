@@ -2,16 +2,16 @@
 
 namespace App\Exports;
 
-use App\Models\Category;
+use App\Models\Product;
 use Maatwebsite\Excel\Concerns\FromCollection;
 
-class ExcelExports implements FromCollection
+class Ex_Pro implements FromCollection
 {
     /**
     * @return \Illuminate\Support\Collection
     */
     public function collection()
     {
-        return Category::all();
+        return Product::all();
     }
 }

@@ -132,7 +132,7 @@
     5% {
       transform: rotate(-45deg);
     }
-    twelfth% {
+    12% {
       transform: rotate(-405deg);
     }
     100% {
@@ -145,7 +145,7 @@
   .animateSuccessLong {
     animation: animateSuccessLong 0.75s;
   }
-  .sa-icon.sa-success.animate :: after {
+  .sa-icon.sa-success.animate ::after {
     animation: rotatePlaceholder 4.25s ease-in;
   }
   @keyframes animateErrorIcon {
@@ -346,7 +346,7 @@
   .sweet-alert .sa-icon.sa-info {
     border-color: #46b8da;
   }
-  .sweet-alert .sa-icon.sa-info :: before {
+  .sweet-alert .sa-icon.sa-info ::before {
     content: "";
     position: absolute;
     width: 5px;
@@ -357,7 +357,7 @@
     margin-left: -2px;
     background-color: #5bc0de;
   }
-  .sweet-alert .sa-icon.sa-info :: after {
+  .sweet-alert .sa-icon.sa-info ::after {
     content: "";
     position: absolute;
     width: 7px;
@@ -370,8 +370,8 @@
   .sweet-alert .sa-icon.sa-success {
     border-color: #4cae4c;
   }
-  .sweet-alert .sa-icon.sa-success :: before,
-  .sweet-alert .sa-icon.sa-success :: after {
+  .sweet-alert .sa-icon.sa-success ::before,
+  .sweet-alert .sa-icon.sa-success ::after {
     content: '';
     border-radius: 50%;
     position: absolute;
@@ -380,14 +380,14 @@
     background: #ffffff;
     transform: rotate(45deg);
   }
-  .sweet-alert .sa-icon.sa-success :: before {
+  .sweet-alert .sa-icon.sa-success ::before {
     border-radius: 120px 0 0 120px;
     top: -7px;
     left: -33px;
     transform: rotate(-45deg);
     transform-origin: 60px 60px;
   }
-  .sweet-alert .sa-icon.sa-success :: after {
+  .sweet-alert .sa-icon.sa-success ::after {
     border-radius: 0 120px 120px 0;
     top: -11px;
     left: 30px;
@@ -570,7 +570,7 @@
       -webkit-transform: translateY(-145%);
       transform: translateY(-145%);
     }
-    ten% {
+    10% {
       opacity: .5;
     }
     20% {
@@ -598,7 +598,7 @@
       -moz-transform: translateY(-145%);
       transform: translateY(-145%);
     }
-    ten% {
+    10% {
       opacity: .5;
     }
     20% {
@@ -620,13 +620,13 @@
       transform: translateY(145%);
     }
   }
-  @ -o-keyframes ball-fall {
+  @-o-keyframes ball-fall {
     0% {
       opacity: 0;
       -o-transform: translateY(-145%);
       transform: translateY(-145%);
     }
-    ten% {
+    10% {
       opacity: .5;
     }
     20% {
@@ -656,7 +656,7 @@
       -o-transform: translateY(-145%);
       transform: translateY(-145%);
     }
-    ten% {
+    10% {
       opacity: .5;
     }
     20% {

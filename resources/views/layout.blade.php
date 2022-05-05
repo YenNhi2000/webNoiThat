@@ -109,7 +109,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 										</div>
 
 										<ul class="list-login">
-											<li> <a href="#"> Lịch sử đơn hàng </a> </li>
+											<li> <a href="{{url('/lich-su-don-hang')}}"> Lịch sử đơn hàng </a> </li>
 											<li> <a href="{{URL::to('/doi-mat-khau')}}"> Đổi mật khẩu </a> </li>
 											<li> <a href="{{URL::to('/dang-xuat')}}"> Đăng xuất </a> </li>
 										</ul>
@@ -351,16 +351,16 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 	</script>
 	<!-- FlexSlider -->
-	<script src="{{asset('public/frontend/js/jquery.flexslider.js')}}"></script>
-	<script>
-		// Can also be used with $(document).ready()
-		$(window).load(function () {
-			$('.flexslider1').flexslider({
-				animation: "slide",
-				controlNav: "thumbnails"
+		<script src="{{asset('public/frontend/js/jquery.flexslider.js')}}"></script>
+		<script>
+			// Can also be used with $(document).ready()
+			$(window).load(function () {
+				$('.flexslider1').flexslider({
+					animation: "slide",
+					controlNav: "thumbnails"
+				});
 			});
-		});
-	</script>
+		</script>
 	<!-- //FlexSlider-->
 
 	<!-- <script src="{{asset('public/frontend/js/jquery.min.js')}}"></script>
@@ -388,7 +388,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script> -->
 <!-- //Details -->
 
-	<!-- Search -->
+<!-- Search -->
 	<script type="text/javascript">
 		$('#keywords').keyup(function(){
 			var query = $(this).val();
@@ -413,9 +413,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			$('#search_ajax').fadeOut();
 		});
 	</script>
-	<!-- //Search -->
+<!-- //Search -->
 
-	<!-- Xem nhanh -->
+<!-- Xem nhanh -->
 	<script type="text/javascript">
 		$('.xemnhanh').click(function(){
 			var product_id = $(this).data('id_pro');
@@ -438,13 +438,13 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			});
 		});
 	</script>
-	<!-- //Xem nhanh -->
+<!-- //Xem nhanh -->
 
 	<!-- Chatbot Mess -->
 	<!-- Messenger Plugin chat Code -->
-    <div id="fb-root"></div>
+    <!-- <div id="fb-root"></div>
 
-    <!-- Your Plugin chat code -->
+    <!-- Your Plugin chat code 
     <div id="fb-customer-chat" class="fb-customerchat">
     </div>
 
@@ -467,7 +467,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         js.src = 'https://connect.facebook.net/vi_VN/sdk/xfbml.customerchat.js';
         fjs.parentNode.insertBefore(js, fjs);
       }(document, 'script', 'facebook-jssdk'));
-    </script>
+    </script> -->
 	
 	<!-- Alert -->
 	<script>
@@ -513,11 +513,11 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 	</script> -->
 	<!-- // modal -->
 
-	<!--search jQuery-->
+<!--search jQuery-->
 	<script src="{{asset('public/frontend/js/modernizr-2.6.2.min.js')}}"></script>
 	<script src="{{asset('public/frontend/js/classie-search.js')}}"></script>
 	<script src="{{asset('public/frontend/js/demo1-search.js')}}"></script>
-	<!--//search jQuery-->
+<!--//search jQuery-->
 
 	<script>
 		$(document).ready(function () {
@@ -567,7 +567,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
 	<!-- //end-smooth-scrolling -->
 
-	<!-- price range (top products) -->
+<!-- price range (top products) -->
 	<script src="{{asset('public/frontend/js/jquery-ui.js')}}"></script>
 	<script>
 		//<![CDATA[ 
@@ -603,9 +603,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				$("#slider-range").slider("values", 1 ) + "đ" );
 		});
 	</script>
-	<!-- //price range (top products) -->
+<!-- //price range (top products) -->
 
-	<!-- Checked -->
+<!-- Checked -->
 	<script type="text/javascript">	
 		// Check brand	
 		$('.brand_filter').click(function(){
@@ -633,9 +633,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			window.location.href = type
 		});
 	</script>
-	<!-- //Checked -->
+<!-- //Checked -->
 
-	<!-- Sort -->
+<!-- Sort -->
 	<script type="text/javascript">
         $(document).ready(function(){
 
@@ -651,9 +651,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 
         }); 
 	</script>
-	<!-- //Sort -->
+<!-- //Sort -->
 	
-	<!-- Count-down -->
+<!-- Count-down -->
 	<script src="{{asset('public/frontend/js/simplyCountdown.js')}}"></script>
 	<link href="{{asset('public/frontend/css/simplyCountdown.css')}}" rel='stylesheet' type='text/css' />
 	<script>
@@ -664,7 +664,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			day: 25
 		});
 	</script>
-	<!--// Count-down -->
+<!--// Count-down -->
 	
 <!-- Cart -->
 	<!-- <script src="{{asset('public/frontend/js/minicart.js')}}"></script> -->
@@ -694,17 +694,34 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				var cart_pro_image = $('.cart_product_image_' + id).val();
 				var cart_pro_price = $('.cart_product_price_' + id).val();
 				var cart_pro_qty = $('.cart_product_qty_' + id).val();
+				var qty_storage = $('.qty_storage').val();
 				var _token = $('input[name="_token"]').val();
 				
-				$.ajax({
-					url: "{{url('/add-cart')}}",
-					method: 'post',
-					data: {cart_pro_id:cart_pro_id, cart_pro_name:cart_pro_name, cart_pro_image:cart_pro_image,
-						cart_pro_price:cart_pro_price, cart_pro_qty:cart_pro_qty, _token:_token}, 
-					success:function(data){
-						swal("Thêm sản phẩm vào giỏ hàng thành công!", "", "success")
-					}
-				});
+				if (parseInt(cart_pro_qty) > parseInt(qty_storage))
+					alert('Số lượng sản phẩm trong kho không đủ');
+				else{
+					$.ajax({
+						url: "{{url('/add-cart')}}",
+						method: 'post',
+						data: {cart_pro_id:cart_pro_id, cart_pro_name:cart_pro_name, cart_pro_image:cart_pro_image,
+							cart_pro_price:cart_pro_price, cart_pro_qty:cart_pro_qty, _token:_token}, 
+						success:function(data){
+							// swal("Thêm sản phẩm vào giỏ hàng thành công!", "", "success")
+							swal({
+								title: "Sản phẩm đã được thêm vào giỏ hàng",
+								text: "Bạn có thể tiếp tục mua hàng hoặc tới giỏ hàng để tiến hành thanh toán",
+								showCancelButton: true,
+								cancelButtonText: "Xem tiếp",
+								confirmButtonClass: "btn-success",
+								confirmButtonText: "Đi đến giỏ hàng",
+								closeOnConfirm: false
+							},
+							function() {
+								window.location.href = "{{url('/gio-hang')}}";
+							});
+						}
+					});
+				}
 			});
 		});
 
@@ -809,28 +826,30 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 <!-- Payment -->
 	<script type="text/javascript">
 	// Add Order
-		$(document).ready(function(){
-			$('.send_order').click(function(){
-				// var order_coupon = $('.order_coupon').val();
-				var shipping_id = $('.shipping_id').val();
-				var order_coupon = $('.order_coupon').val();
-				var order_total = $('.order_total').val();
-				var payment_method = $('.payment_method').val();
-				var _token = $('input[name="_token"]').val();
+		// $(document).ready(function(){
+		// 	$('.send_order').click(function(){
+		// 		var shipping_id = $('.shipping_id').val();
+		// 		var order_coupon = $('.order_coupon').val();
+		// 		var order_total = $('.order_total').val();
+		// 		var payment_method = $('.payment_method').val();
+		// 		var _token = $('input[name="_token"]').val();
 
-				if(payment_method == 0)
-					alert("Bạn chưa chọn phương thức thanh toán");
-				else{
-					$.ajax({
-						url: "{{url('/confirm-order')}}",
-						method: 'post',
-						data: {shipping_id:shipping_id, order_coupon:order_coupon, order_total:order_total, 
-							payment_method:payment_method, _token:_token}, 
-						success:function(data){
-							swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
-						}
-					});
-				}
+		// 		if(shipping_id == null)
+		// 			alert("Bạn chưa nhập địa chỉ nhận hàng");
+		// 		if(payment_method == 0)
+		// 			alert("Bạn chưa chọn phương thức thanh toán");
+		// 		else{
+		// 			$.ajax({
+		// 				url: "{{url('/confirm-order')}}",
+		// 				method: 'post',
+		// 				data: {shipping_id:shipping_id, order_coupon:order_coupon, order_total:order_total, 
+		// 					payment_method:payment_method, _token:_token}, 
+		// 				success:function(){
+		// 					// swal("Đơn hàng", "Đơn hàng của bạn đã được gửi thành công", "success");
+		// 					alert('Đặt hàng thành công');
+		// 				}
+		// 			});
+		// 		}	
 
 				
 				// swal({
@@ -877,13 +896,115 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
                 //       }
               
                 // });
-			});
-		});
+		// 	});
+		// });
 	</script>
 <!-- //Payment -->
 
+<!-- Comment -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+			load_comment();
 
-	<!-- dropdown nav -->
+			function load_comment(){
+				var product_id = $('.comment_product_id').val();
+				var _token = $('input[name="_token"]').val();
+				$.ajax({
+				url:"{{url('/load-comment')}}",
+				method:"POST",
+				data:{product_id:product_id, _token:_token},
+				success:function(data){
+				
+					$('#comment').html(data);
+				}
+				});
+			}
+
+			$('.send-comment').click(function(){
+				var product_id = $('.comment_product_id').val();
+				var comment_name = $('.comment_name').val();
+				var comment_content = $('.comment_content').val();
+				var _token = $('input[name="_token"]').val();
+				$.ajax({
+					url:"{{url('/send-comment')}}",
+					method:"POST",
+					data:{product_id:product_id,comment_name:comment_name,comment_content:comment_content, _token:_token},
+					success:function(data){
+						$('#notify_comment').html('<span class="text text-success">Thêm bình luận thành công, bình luận đang chờ duyệt</span>');
+						load_comment();
+						$('#notify_comment').fadeOut(3000);
+						$('.comment_name').val('');
+						$('.comment_content').val('');
+					}
+				});
+			});
+		});
+	</script>
+<!-- //Comment -->
+
+<!-- Rating -->
+	<script type="text/javascript">
+		function remove_background(product_id){
+			for(var count = 1; count <= 5; count++){
+				$('#'+product_id+'-'+count).css('color', '#ccc');
+			}
+		}
+
+		//hover chuột đánh giá sao
+		$(document).on('mouseenter', '.rating', function(){
+			var index = $(this).data('index');
+			var product_id = $(this).data('product_id');
+			
+			remove_background(product_id);
+			for(var count = 1; count<=index; count++){
+				$('#'+product_id+'-'+count).css('color', '#ffcc00');
+			}
+		});
+
+		//nhả chuột ko đánh giá
+		$(document).on('mouseleave', '.rating', function(){
+			var index = $(this).data("index");
+			var product_id = $(this).data('product_id');
+			var rating = $(this).data("rating");
+			remove_background(product_id);
+			//alert(rating);
+			for(var count = 1; count<=rating; count++){
+				$('#'+product_id+'-'+count).css('color', '#ffcc00');
+			}
+		});
+
+		//click đánh giá sao
+		$(document).on('click', '.rating', function(){
+			var index = $(this).data("index");
+			var product_id = $(this).data('product_id');
+			var _token = $('input[name="_token"]').val();
+
+			$.ajax({
+				url:"{{url('/insert-rating')}}",
+				method:"POST",
+				data:{index:index, product_id:product_id,_token:_token},
+				success:function(data)
+				{
+					if(data == 'done')
+						alert("Bạn đã đánh giá "+index +" trên 5");
+					else
+						alert("Lỗi đánh giá");
+				}
+			});
+		});
+	</script>
+<!-- //Rating -->
+
+<!-- Validator -->
+	<script src="{{asset('public/frontend/js/jquery.form-validator.min.js')}}"></script>
+    <script type="text/javascript">
+        $.validate({
+            
+        });
+    </script>
+<!-- Validator -->
+
+<!-- dropdown nav -->
 	<script>
 		$(document).ready(function () {
 			$(".dropdown").hover(
@@ -898,7 +1019,8 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			);
 		});
 	</script>
-	<!-- //dropdown nav -->
+<!-- //dropdown nav -->
+
   	<script src="{{asset('public/frontend/js/move-top.js')}}"></script>
     <script src="{{asset('public/frontend/js/easing.js')}}"></script>
     <script>

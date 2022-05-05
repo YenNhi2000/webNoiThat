@@ -27,6 +27,7 @@ p {
 
 .resp-tabs-container {
   padding: 2em;
+  padding-bottom: 60px;
   clear: left;
   border: 1px solid #ddd;
 }

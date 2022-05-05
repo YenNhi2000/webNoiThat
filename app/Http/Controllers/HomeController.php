@@ -19,10 +19,11 @@ class HomeController extends Controller
         $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
         $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','asc')->get();
         $type_pro = Type::where('type_status','1')->orderBy('type_id','asc')->get();
-        $feature_pro = Product::where('product_status','1')->orderBy('product_id','asc')->limit(8)->get();
 
         $new_product = Product::where('product_status','1')->orderBy('product_id','desc')->limit(8)->get();
 
+        $feature_pro = Product::where('product_status','1')->orderBy('avg_star','desc')->limit(8)->get();
+        
         // Seo  
         $url_canonical = $request->url();
 

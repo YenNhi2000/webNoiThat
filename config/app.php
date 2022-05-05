@@ -179,6 +179,7 @@ return [
         Brian2694\Toastr\ToastrServiceProvider::class,
 
         Laravel\Socialite\SocialiteServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
     ],
 
@@ -238,6 +239,7 @@ return [
         'Toastr'  => Brian2694\Toastr\Facades\Toastr::class,
 
         'Socialite' => Laravel\Socialite\Facades\Socialite::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class,
     ],
 
 ];

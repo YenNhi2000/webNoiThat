@@ -6,13 +6,6 @@
         <div class="widget-shadow">
             <div class="login-body">
 
-                    @if (session()->has('messageChange'))
-                        <div class="alert alert-success">
-                            {{ session()->get('messageChange') }}
-                            {{ session()->put('messageChange', null) }}
-                        </div>
-                    @endif
-
                 <form action="{{URL::to('/confirm-pass')}}" method="post">
 
                     {{ csrf_field() }}
@@ -31,15 +24,6 @@
                                     @foreach ($errors->all() as $error)
                                         <li>{{ $error }}</li>
                                     @endforeach
-                                </ul>
-                            </div>
-                        @elseif (session()->has('errorChange'))
-                            <div class="alert-danger">
-                                <ul>
-                                    <li>
-                                        {{ session()->get('errorChange') }}
-                                        {{ session()->put('errorChange', null) }}
-                                    </li>
                                 </ul>
                             </div>
                         @endif

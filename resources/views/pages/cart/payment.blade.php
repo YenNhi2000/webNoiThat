@@ -55,24 +55,20 @@
 
                                                 <section class="creditly-wrapper wrapper">
                                                     <div class="information-wrapper">
-                                                        <div class="first-row form-group">
-                                                            <div class="controls">
-                                                                <input class="billing-address-name form-control" type="text" name="name" placeholder="Họ và tên">
+                                                        <div class="first-row">
+                                                            <div class="form-group">
+                                                                <input class="billing-address-name form-control" type="text" name="name" placeholder="Họ và tên" 
+                                                                data-validation="length" data-validation-length="min1" data-validation-error-msg="Bạn chưa nhập tên người nhận">
                                                             </div>
-                                                            <div class="card_number_grids">
-                                                                <div class="card_number_grid_left">
-                                                                    <div class="controls">
-                                                                        <input class="form-control" type="text" name="phone" placeholder="Số điện thoại">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="card_number_grid_right">
-                                                                    <div class="controls">
-                                                                        <input class="form-control" type="text" name="address" placeholder="Địa chỉ">
-                                                                    </div>
-                                                                </div>
-                                                                <div class="clear"> </div>
+                                                            <div class="form-group">
+                                                                <input class="form-control" type="text" name="phone" placeholder="Số điện thoại"
+                                                                data-validation="number||length" data-validation-length="10" data-validation-error-msg="Số điện thoại chỉ chứa ký tự số có độ dài là 10 ký tự">
                                                             </div>
-                                                            <div class="controls">
+                                                            <div class="form-group">
+                                                                <input class="form-control" type="text" name="address" placeholder="Địa chỉ"
+                                                                data-validation="length" data-validation-length="min1" data-validation-error-msg="Bạn chưa nhập địa chỉ người nhận">
+                                                            </div>
+                                                            <div class="form-group">
                                                                 <textarea class="form-control" name="notes" rows="3" placeholder="Ghi chú"></textarea>
                                                             </div>
                                                         </div>
@@ -161,7 +157,7 @@
                 </div>
 
                 <div class="payment">
-                    <form method="POST">
+                    <form method="POST" action="{{url('/confirm-order')}}">
 
                         @csrf
 
@@ -172,6 +168,10 @@
                         @else
                             <input type="hidden" name="order_coupon" class="order_coupon" value="Không có"/>
                         @endif
+
+                        @foreach($shipping as $key => $val)
+                            <input type="hidden" name="shipping_id" class="shipping_id" value="{{$val->shipping_id}}"/>
+                        @endforeach
 
                         <div class="method-payment">
                             <div class="payment-left">
@@ -185,18 +185,6 @@
                                         <option value="2">Thanh toán khi nhận hàng</option>
                                     </select>
                                 </div>
-                                <!-- <div class="form-check">
-                                    <input class="form-check-input payment_method" type="radio" name="payment_method" value="0">
-                                    <label class="form-check-label">
-                                        Thẻ tín dụng
-                                    </label>
-                                </div>
-                                <div class="form-check">
-                                    <input class="form-check-input payment_method" type="radio" name="payment_method" value="1">
-                                    <label class="form-check-label">
-                                        Thanh toán khi nhận hàng
-                                    </label>
-                                </div> -->
                             </div>
                             <div class="clearfix"> </div>
                         </div>
@@ -244,7 +232,7 @@
 
                             </ul>
                     
-                            <input type="button" name="send_order" class="send_order" value="Đặt hàng" />
+                            <input type="submit" class="send_order" value="Đặt hàng" /> <!-- name="send_order" -->
                             <span class="text"></span>
                         </div>
                     </form>

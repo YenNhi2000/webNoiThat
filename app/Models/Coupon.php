@@ -9,7 +9,8 @@ class Coupon extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
     protected $filltable = [
-        'coupon_name', 'coupon_code', 'coupon_quantity', 'coupon_condition', 'coupon_number'	//các cột trong bảng Brand
+        'coupon_name', 'coupon_code', 'coupon_quantity', 'coupon_condition', 'coupon_number',
+        'date_start', 'date_end', 'coupon_storage'	//các cột trong bảng Brand
     ];
     protected $primaryKey = 'coupon_id';	//khóa chính
     protected $table = 'tbl_coupon';		//tên bảng

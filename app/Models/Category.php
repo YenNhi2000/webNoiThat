@@ -9,7 +9,7 @@ class Category extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
     protected $filltable = [
-        'category_name', 'category_slug', 'category_desc', 'category_status'	//các cột trong bảng category
+        'category_name', 'category_slug', 'category_desc', 'category_status', 'category_storage'	//các cột trong bảng category
     ];
     protected $primaryKey = 'category_id';	//khóa chính
     protected $table = 'tbl_category';		//tên bảng

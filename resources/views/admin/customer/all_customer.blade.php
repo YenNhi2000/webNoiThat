@@ -1,30 +1,13 @@
 @extends('admin_layout')
 @section('admin_content')
 
-<div class="tables" style="margin-top: -30px;">
+<div class="tables">
     <div class="bs-example widget-shadow" data-example-id="hoverable-table"> 
         <h4 class="text-center text-uppercase">Danh sách khách hàng</h4>
-        
-            @if (session()->has('messageCustomer'))
-                <div class="alert alert-success">
-                    {{ session()->get('messageCustomer') }}
-                    {{ session()->put('messageCustomer', null) }}
-                </div>
-            @elseif(session()->has('errorCustomer'))
-                <div class="alert alert-danger">
-                    {{ session()->get('errorCustomer') }}
-                    {{ session()->put('errorCustomer', null) }}
-                </div>
-            @endif
 
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs">
-                <!-- <select class="input-sm form-control w-sm inline v-middle">
-                    <option value="0">Bulk action</option>
-                    <option value="1">Delete selected</option>
-                    <option value="2">Bulk edit</option>
-                    <option value="3">Export</option>
-                </select> -->
+                <a href="{{url('/customer-storage')}}" class="storage">Lưu trữ</a>
             </div>
             <div class="col-sm-4"></div>
             <div class="col-sm-3">

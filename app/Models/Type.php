@@ -9,7 +9,7 @@ class Type extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
     protected $fillable = [
-        'type_name', 'type_desc', 'type_status'	//các cột trong bảng type
+        'type_name', 'type_desc', 'type_status', 'type_storage'	//các cột trong bảng type
     ];
     protected $primaryKey = 'type_id';	//khóa chính
     protected $table = 'tbl_type';		//tên bảng

@@ -97,7 +97,7 @@ class CartController extends Controller
                 }
             }
             Session::put('cart', $cart);
-            Toastr::success('Xóa sản phẩm thành công','Thành công');
+            Toastr::success('Xóa sản phẩm thành công','');
         }
     }
 
@@ -106,7 +106,7 @@ class CartController extends Controller
         if ($cart == true){
             Session::forget('cart');
             Session::forget('coupon');
-            Toastr::success('Xóa tất cả sản phẩm thành công','Thành công');
+            Toastr::success('Đã xóa tất cả sản phẩm trong giỏ hàng','');
             return redirect()->back();
         }
     }
@@ -115,7 +115,10 @@ class CartController extends Controller
 // Coupon
     public function check_coupon(Request $request){
         $data = $request->all();
-        $coupon = Coupon::where('coupon_code', $data['coupon'])->first();
+
+        $today = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
+
+        $coupon = Coupon::where('coupon_code', $data['coupon'])->where('date_end', '>=', $today)->first();
         if ($coupon){
             $count_coupon = $coupon->count();   //đếm coupon
             if ($count_coupon > 0){
@@ -139,12 +142,12 @@ class CartController extends Controller
                     Session::put('coupon', $cou);
                 }
                 Session::save();
-                Toastr::success('Thêm mã giảm giá thành công','Thành công');
+                Toastr::success('Thêm mã giảm giá thành công','');
                 
                 return redirect()->back();
             }
         }else{
-            Toastr::error('Mã giảm giá không đúng','Thất bại');
+            Toastr::error('Mã giảm giá không đúng hoặc đã hết hạn','');
             return redirect()->back();
         }
     }
@@ -153,7 +156,7 @@ class CartController extends Controller
         $cart = Session::get('coupon');
         if ($cart == true){
             Session::forget('coupon');
-            Toastr::success('Xóa mã giảm giá thành công','Thành công');
+            Toastr::success('Xóa mã giảm giá thành công','');
             return redirect()->back();
         }
     }
@@ -171,7 +174,7 @@ class CartController extends Controller
         $customer_id = Session::get('customer_id');
         $shipping = DB::table('tbl_shipping')
             ->join('tbl_customers', 'tbl_shipping.customer_id', '=', 'tbl_customers.customer_id')
-            ->where('tbl_customers.customer_id', $customer_id)->get();
+            ->where('tbl_customers.customer_id', $customer_id)->orderBy('shipping_id','desc')->limit(1)->get();
 
         if ($customer_id){
             return view('pages.cart.payment')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'shipping', 'url_canonical'));
@@ -183,11 +186,17 @@ class CartController extends Controller
 
     public function save_shipping(Request $request){    //Shipping
         $data = $request->all();
+        
         $shipping = new Shipping();
         $shipping->shipping_name = $data['name'];
         $shipping->shipping_phone = $data['phone'];
         $shipping->shipping_address = $data['address'];
-        $shipping->shipping_notes = $data['notes'];
+
+        if ($data['notes'] == null)
+            $shipping->shipping_notes = 'Không có';
+        else
+            $shipping->shipping_notes = $data['notes'];
+            
         $shipping->customer_id = Session::get('customer_id');
         $shipping->save();
 
@@ -199,96 +208,104 @@ class CartController extends Controller
         $data = $request->all();
 
         $payment = new Payment();
-        $payment->payment_method = $data['payment_method'];
-        $payment->save();
-        $payment_id = $payment->payment_id;
-
-        $checkout_code = substr(md5(microtime()), rand(0,26),5);
-
-        $order = new Order();
-        $order->customer_id = Session::get('customer_id');
-        $order->shipping_id = $data['shipping_id'];
-        $order->payment_id = $payment_id;
-        $order->order_total = $data['order_total'];
-        $order->order_status = 1;
-        $order->order_code = $checkout_code;
-
-        date_default_timezone_set('Asia/Ho_Chi_Minh');
         
-        $order_date = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
-        $order->order_date = $order_date;
-              
-        $today = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d H:i:s');
-        $order->created_at = $today;
-        $order->save();
-
-        if(Session::get('cart')==true){
-            foreach(Session::get('cart') as $key => $cart){
-              $order_details = new OrderDetails;
-              $order_details->order_code = $checkout_code;
-              $order_details->product_id = $cart['product_id'];
-              $order_details->product_name = $cart['product_name'];
-              $order_details->product_price = $cart['product_price'];
-              $order_details->product_quantity = $cart['product_qty'];
-              $order_details->order_coupon =  $data['order_coupon'];
-              $order_details->save();
-            }
+        if ($data['payment_method'] == 0){
+            Toastr::error('Bạn chưa chọn phương thức thanh toán', '');
+            return redirect()->back();
         }
+        else{
+            $payment->payment_method = $data['payment_method'];
+            $payment->save();
+            $payment_id = $payment->payment_id;
 
-        //send mail confirm
-        // $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+            $checkout_code = substr(md5(microtime()), rand(0,26),5);
 
-        // $title_mail = "Đơn hàng xác nhận ngày".' '.$now;
+            $order = new Order();
+            $order->customer_id = Session::get('customer_id');
+            $order->shipping_id = $data['shipping_id'];
+            $order->payment_id = $payment_id;
+            $order->order_total = $data['order_total'];
+            $order->order_status = 1;
+            $order->order_code = $checkout_code;    
+            $order->order_coupon = $data['order_coupon'];
 
-        // $customer = Customer::find(Session::get('customer_id'));
+            // date_default_timezone_set('Asia/Ho_Chi_Minh');
+
+            $today = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+            $order->created_at = $today;
+            $order->save();
+
+            if(Session::get('cart')==true){
+                foreach(Session::get('cart') as $key => $cart){
+                    $order_details = new OrderDetails;
+                    $order_details->order_code = $checkout_code;
+                    $order_details->product_id = $cart['product_id'];
+                    $order_details->product_name = $cart['product_name'];
+                    $order_details->product_price = $cart['product_price'];
+                    $order_details->product_quantity = $cart['product_qty'];
+                    $order_details->save();
+                }
+            }
+
+            $coupon = Coupon::where('coupon_code', $data['order_coupon'])->first();
+            $coupon->coupon_quantity = $coupon->coupon_quantity - 1;
+            $coupon->save();
+
+            // //send mail confirm
+            // $now = Carbon::now('Asia/Ho_Chi_Minh')->format('d-m-Y H:i:s');
+
+            // $title_mail = "Đơn hàng xác nhận ngày".' '.$now;
+
+            // $customer = Customer::find(Session::get('customer_id'));
+                
+            // $data['email'][] = $customer->customer_email;
+
+            // //lay gio hang
+            // if(Session::get('cart')==true){
+            //     foreach(Session::get('cart') as $key => $cart_mail){
+            //         $cart_array[] = array(
+            //             'product_name' => $cart_mail['product_name'],
+            //             'product_price' => $cart_mail['product_price'],
+            //             'product_qty' => $cart_mail['product_qty']
+            //         );
+            //     }
+            // }
+            // //lay shipping
+            // if(Session::get('fee')==true){
+            //     $fee = Session::get('fee').'k';
+            // }else{
+            //     $fee = '25k';
+            // }
             
-        // $data['email'][] = $customer->customer_email;
-        // //lay gio hang
-        // if(Session::get('cart')==true){
+            // $shipping_array = array(
+            //     'fee' =>  $fee,
+            //     'customer_name' => $customer->customer_name,
+            //     'shipping_name' => $data['shipping_name'],
+            //     'shipping_email' => $data['shipping_email'],
+            //     'shipping_phone' => $data['shipping_phone'],
+            //     'shipping_address' => $data['shipping_address'],
+            //     'shipping_notes' => $data['shipping_notes'],
+            //     'shipping_method' => $data['shipping_method']
 
-        //     foreach(Session::get('cart') as $key => $cart_mail){
+            // );
+            // //lay ma giam gia, lay coupon code
+            // $ordercode_mail = array(
+            //     'coupon_code' => $coupon_mail,
+            //     'order_code' => $checkout_code,
+            // );
 
-        //     $cart_array[] = array(
-        //         'product_name' => $cart_mail['product_name'],
-        //         'product_price' => $cart_mail['product_price'],
-        //         'product_qty' => $cart_mail['product_qty']
-        //     );
+            // Mail::send('pages.mail.mail_order',  ['cart_array'=>$cart_array, 'shipping_array'=>$shipping_array ,'code'=>$ordercode_mail] , function($message) use ($title_mail,$data){
+            //     $message->to($data['email'])->subject($title_mail);//send this mail with subject
+            //     $message->from($data['email'],$title_mail);//send from this mail
+            // });
+            
+            Toastr::success('Bạn đã đặt hàng thành công','');
 
-        //     }
-
-        // }
-        // //lay shipping
-        // if(Session::get('fee')==true){
-        //     $fee = Session::get('fee').'k';
-        // }else{
-        //     $fee = '25k';
-        // }
-        
-        // $shipping_array = array(
-        //     'fee' =>  $fee,
-        //     'customer_name' => $customer->customer_name,
-        //     'shipping_name' => $data['shipping_name'],
-        //     'shipping_email' => $data['shipping_email'],
-        //     'shipping_phone' => $data['shipping_phone'],
-        //     'shipping_address' => $data['shipping_address'],
-        //     'shipping_notes' => $data['shipping_notes'],
-        //     'shipping_method' => $data['shipping_method']
-
-        // );
-        // //lay ma giam gia, lay coupon code
-        // $ordercode_mail = array(
-        //     'coupon_code' => $coupon_mail,
-        //     'order_code' => $checkout_code,
-        // );
-
-        // Mail::send('pages.mail.mail_order',  ['cart_array'=>$cart_array, 'shipping_array'=>$shipping_array ,'code'=>$ordercode_mail] , function($message) use ($title_mail,$data){
-        //     $message->to($data['email'])->subject($title_mail);//send this mail with subject
-        //     $message->from($data['email'],$title_mail);//send from this mail
-        // });
-        
-        Session::forget('coupon');
-        // Session::forget('fee');
-        Session::forget('cart');
+            Session::forget('coupon');
+            // Session::forget('fee');
+            Session::forget('cart');
+            return Redirect::to('/');
+        }
     }
 // End Payment
 }

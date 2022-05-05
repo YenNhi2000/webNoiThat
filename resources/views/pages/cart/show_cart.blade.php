@@ -40,8 +40,7 @@
                 @endif
 
                <form>
-
-                        @csrf
+                    @csrf
 
                     <table class="timetable_sub">
                         <thead>
@@ -106,10 +105,10 @@
             <div class="checkout-left row">
                 <div class="col-md-4 checkout-left-basket">
                     <div class="action-cart"> 
-                        <button type="button" class="btn-cart">Chọn tất cả</button>
-                        <a href="{{url('/delete-all')}}">Xóa</a>
+                        <!-- <button type="button" class="btn-cart">Chọn tất cả</button> -->
+                        <a href="{{url('/delete-all')}}">Xóa tất cả</a>
                         @if(Session::get('coupon'))
-                            <a href="{{url('/delete-coupon')}}">Xóa coupon</a>
+                            <a href="{{url('/delete-coupon')}}">Xóa mã giảm giá</a>
                         @endif
                     </div>
                     <div class="continue-shopping"><a href="{{url('/')}}"><i class="fa fa-chevron-left"></i>Tiếp tục mua sắm</a></div>

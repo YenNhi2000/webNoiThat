@@ -2,17 +2,24 @@
 
 namespace App\Http\Controllers;
 
+use App\Exports\Ex_Pro;
+use App\Imports\Im_Pro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\File;
 use App\Models\Brand;
 use App\Models\Category;
-use App\Models\Gallery;
-use App\Models\Product;
+use App\Models\Comment;
+use App\Models\Customer;
 use App\Models\Type;
+use App\Models\Gallery;
+use App\Models\OrderDetails;
+use App\Models\Product;
+use App\Models\Rating;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Redirect;
+use Maatwebsite\Excel\Facades\Excel;
 
 session_start();
 
@@ -34,20 +41,43 @@ class ProductController extends Controller
             ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
             ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
-            ->orderBy('tbl_product.product_id','desc')->paginate(6);
+            ->orderBy('tbl_product.product_id','desc')
+            ->where('product_storage','0')->paginate(6);
 
-        $manager_product = view('admin.product.all_product')->with(compact('all_product'));
-        return view('admin_layout')->with('admin.product.all_product', $manager_product);
+        // $manager_product = view('admin.product.all_product')->with(compact('all_product'));
+        return view('admin.product.all_product')->with(compact('all_product'));
+    }
+
+    public function import_pro(Request $request){
+        $path = $request->file('file')->getRealPath();
+        Excel::import(new Im_Pro, $path);
+        return back();
+    }
+
+    public function export_pro(){
+        return Excel::download(new Ex_Pro ,'product.xlsx');
     }
 
     public function add_product(){
         $this->AuthLogin();
-        $cat = DB::table('tbl_category')->orderBy('category_id','desc')->get();
-        $brand = DB::table('tbl_brand')->orderBy('brand_id','desc')->get();
-        $type = DB::table('tbl_type')->orderBy('type_id','desc')->get();
+        $cat_product = Category::orderBy('category_id','asc')->get();
+        $brand_product = Brand::orderBy('brand_id','asc')->get();
+        $type_product = Type::orderBy('type_id','asc')->get();
 
-        return view('admin.product.add_product')->with('cat_product', $cat)->with('brand_product', $brand)
-            ->with('type_product', $type);
+        return view('admin.product.add_product')
+            ->with(compact('cat_product', 'brand_product', 'type_product'));
+    }
+
+    public function view_product($pro_slug){
+        $this->AuthLogin();
+
+        $detail = DB::table('tbl_product') 
+            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
+            ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
+            ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
+            ->where('tbl_product.product_slug', $pro_slug)->first();
+
+        return view('admin.product.view_product')->with(compact('detail'));
     }
 
     public function save_product(Request $request){
@@ -106,22 +136,22 @@ class ProductController extends Controller
         $gallery->product_id = $pro_id;
         $gallery->save();
 
-        Toastr::success('Thêm sản phẩm thành công','Thành công');
+        Toastr::success('Thêm sản phẩm thành công','');
         return Redirect::to('add-product');
     }
 
     public function unactive_product($pro_slug){
         $this->AuthLogin();
         Product::where('product_slug', $pro_slug)->update(['product_status'=>1]);
-        Toastr::success('Kích hoạt sản phẩm thành công','Thành công');
-        return Redirect::to('all-product');
+        Toastr::success('Kích hoạt sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function active_product($pro_slug){
         $this->AuthLogin();
         Product::where('product_slug', $pro_slug)->update(['product_status'=>0]);
-        Toastr::success('Bỏ kích hoạt sản phẩm thành công','Thành công');
-        return Redirect::to('all-product');
+        Toastr::success('Bỏ kích hoạt sản phẩm thành công','');
+        return redirect()->back();
     }
 
     public function edit_product($pro_slug){
@@ -131,9 +161,10 @@ class ProductController extends Controller
         $type_product = Type::orderBy('type_id','desc')->get();
 
         $edit_product = Product::where('product_slug', $pro_slug)->get();
-        $manager_product = view('admin.product.edit_product')
+        // $manager_product = view('admin.product.edit_product')
+        //     ->with(compact('cat_product','brand_product','type_product','edit_product'));
+        return view('admin.product.edit_product')
             ->with(compact('cat_product','brand_product','type_product','edit_product'));
-        return view('admin_layout')->with('admin.product.edit_product', $manager_product);
     }
 
     public function update_product(Request $request, $pro_slug){
@@ -155,21 +186,75 @@ class ProductController extends Controller
             $get_img->move('public/uploads/products', $new_img);
             $data['product_image'] = $new_img;
             DB::table('tbl_product')->where('product_slug', $pro_slug)->update($data);
-            Toastr::success('Cập nhật sản phẩm thành công','Thành công');
+            Toastr::success('Cập nhật sản phẩm thành công','');
             return Redirect::to('all-product');
         }
         DB::table('tbl_product')->where('product_slug', $pro_slug)->update($data);
-        Toastr::success('Cập nhật sản phẩm thành công','Thành công');
+        Toastr::success('Cập nhật sản phẩm thành công','');
         return Redirect::to('all-product');
     }
 
-    public function delete_product($pro_slug){
+    public function delete_product($pro_id){
         $this->AuthLogin();
-        $del_pro = Product::find($pro_slug);
-        unlink('public/uploads/products/'.$del_pro->product_image);
-        $del_pro->delete();
-        Toastr::success('Xóa sản phẩm thành công','Thành công');
-        return Redirect::to('all-product');
+        $del_pro = Product::find($pro_id);
+        // unlink('public/uploads/products/'.$del_pro->product_image);
+        // $del_pro->delete();
+        $del_pro->product_storage = '1';
+        $del_pro->save();
+        Toastr::success('Xóa sản phẩm thành công','');
+        return redirect()->back();
+    }
+
+    public function product_storage(){
+        $this->AuthLogin();
+
+        $storage = Product::where('product_storage','1')->orderBy('product_id','desc')->get();
+        return view('admin.product.storage')->with(compact('storage'));
+    }
+
+    public function restore_product($product_id){
+        $this->AuthLogin();
+        $restore = Product::find($product_id);
+        $restore->product_storage = '0';
+        $restore->save();
+        Toastr::success('Khôi phục sản phẩm thành công','');
+        return redirect()->back();
+    }
+
+
+    
+    public function all_comment(){
+        $comment = Comment::with('product')->where('comment_parent_comment','=',0)->orderBy('comment_id','DESC')->get();
+        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
+        return view('admin.comment.all_comment')->with(compact('comment', 'comment_rep'));
+    }
+
+    public function active_comment($cmt_id){
+        $this->AuthLogin();
+        Comment::where('comment_id', $cmt_id)->update(['comment_status'=>1]);
+        Toastr::success('Bỏ duyệt bình luận','');
+        return redirect()->back();
+    }
+
+    public function unactive_comment($cmt_id){
+        $this->AuthLogin();
+        Comment::where('comment_id', $cmt_id)->update(['comment_status'=>0]);
+        Toastr::success('Đã duyệt bình luận','');
+        return redirect()->back();
+    }
+
+    public function reply_comment(Request $request){
+        $data = $request->all();
+        $comment = new Comment();
+        $comment->comment = $data['reply_comment'];
+        $comment->comment_pro_id = $data['pro_id'];
+        $comment->comment_parent_comment = $data['cmt_id'];
+        $comment->comment_status = 0;
+        $comment->comment_name = 'N&T Store';
+        $comment->save();
+
+        Toastr::success('Đã trả lời bình luận','');
+        return redirect()->back();
     }
 
     //End Admin
@@ -202,30 +287,136 @@ class ProductController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // tên sp trong banner
         $pro_name = Product::where('product_slug',$pro_slug)->limit(1)->get();
 
+        // Chi tiết sản phẩm
         $details_pro = DB::table('tbl_product')
             ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
             ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
             ->where('tbl_product.product_slug',$pro_slug)->get();
 
-
         foreach($details_pro as $key => $value){
-            $cat_id = $value->category_id;
             $product_id = $value->product_id;
         }
 
         $gallery = Gallery::where('product_id', $product_id)->get();
 
+        $rating = Rating::where('product_id', $product_id)->avg('rating');  //lấy trung bình số sao
+        $rating = round($rating);   //làm tròn
+
+        // Đánh giá
+        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
+            ->where('product_id', $product_id)->orderBy('rating','desc')->first();
+
+        
+        // Bình luận
+        $order_product = OrderDetails::with('product')->where('product_id', $product_id)->first();
+        $cus_name = Customer::where('customer_id', Session::get('customer_id'))->first();
+
+        // Sản phẩm nổi bật theo số sao đánh giá
         $related_pro = DB::table('tbl_product')
-            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
+            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')           
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
             ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
-            ->where('tbl_category.category_id',$cat_id)->whereNotIn('tbl_product.product_slug', [$pro_slug])->get();
-
+            ->where('product_status','1')->orderBy('tbl_product.avg_star','desc')
+            ->whereNotIn('tbl_product.product_slug', [$pro_slug])->limit(8)->get();
 
         return view('pages.product.show_details')
-            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'pro_name', 'details_pro', 'related_pro','gallery'));
+            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'pro_name', 'details_pro', 
+            'gallery', 'rating', 'cus_rating', 'order_product', 'cus_name', 'related_pro'));
     }
+
+    public function load_comment(Request $request){
+        $pro_id = $request->product_id;
+        // $comment_name = Customer::find(Session::get('customer_id'));
+        
+        $comment = Comment::where('comment_pro_id', $pro_id)->where('comment_parent_comment','=',0)->where('comment_status',0)->get();
+        $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
+        $output = '';
+        foreach($comment as $key => $cmt){
+            $output.= ' 
+                <div class="row style_comment">
+                    <div class="col-md-2">
+                        <img width="100%" src="'.url('/public/backend/images/2.jpg').'" class="img img-responsive img-thumbnail">
+                    </div>
+                    <div class="col-md-10">
+                        <p>
+                            <span style="font-weight:bold; color:#000; margin-right:50px;">@'.$cmt->comment_name.'</span>
+                            <span style="color:#000;">'.$cmt->comment_date.'</span>
+                        </p>
+                        <p>'.$cmt->comment.'</p>
+                    </div>
+                </div><p></p>
+            ';
+
+            foreach($comment_rep as $key => $rep_cmt)  {
+                if($rep_cmt->comment_parent_comment == $cmt->comment_id)  {
+                    $output.= ' 
+                        <div class="row style_comment" style="margin:5px 0px 5px 80px; background: #f2f2f2;">
+
+                            <div class="col-md-2">
+                                <img width="80%" src="'.url('/public/frontend/images/businessman.jpg').'" class="img img-responsive img-thumbnail">
+                            </div>
+                            <div class="col-md-10">
+                                <p>
+                                    <span style="font-weight:bold; color:#000; margin-right:50px;">@'.$rep_cmt->comment_name.'</span>
+                                    <span style="color:#000;">'.$rep_cmt->comment_date.'</span>
+                                </p>
+                                <p style="color:#000;">'.$rep_cmt->comment.'</p>
+                                <p></p>
+                            </div>
+                        </div><p></p>';
+                }
+            }
+        }
+        echo $output;
+    }
+
+    public function send_comment(Request $request){
+        $pro_id = $request->product_id;
+        $cmt_name = $request->comment_name;
+        $cmt_content = $request->comment_content;
+        $cmt = new Comment();
+        $cmt->comment_name = $cmt_name;
+        $cmt->comment = $cmt_content;
+        $cmt->comment_pro_id = $pro_id;
+        $cmt->comment_status = 1;
+        $cmt->comment_parent_comment = 0;
+        $cmt->save();
+    }
+    
+    public function insert_rating(Request $request){
+        $data = $request->all();
+        $rating = new Rating();
+        $rating->product_id = $data['product_id'];
+        $rating->rating = $data['index'];
+        $rating->customer_id = Session::get('customer_id');
+        // $rating->ord_detail_id = $data['orderCode'];
+        $rating->save();
+
+        $product = Product::find($data['product_id']);
+        $product->product_total_star = $product->product_total_star + $rating->rating;
+        $product->product_total_review = $product->product_total_review + 1;
+        $product->avg_star = $product->product_total_star/$product->product_total_review;
+        $product->save();
+
+        echo 'done';
+    }
+
+//     public function file_browser(Request $request){
+//         $paths = glob(public_path('uploads/ckeditor/*'));
+
+//         $fileNames = array();
+
+//         foreach($paths as $path){
+//             array_push($fileNames,basename($path));
+//         }
+//         $data = array(
+//             'fileNames' => $fileNames
+//         );
+       
+//         return view('admin.images.file_browser')->with($data);
+//    }
 }

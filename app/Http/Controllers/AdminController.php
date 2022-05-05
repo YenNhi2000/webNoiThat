@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
 use App\Models\Social;
+use App\Models\Statistical;
 use Laravel\Socialite\Facades\Socialite;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Mail;
@@ -48,6 +49,28 @@ class AdminController extends Controller
         // $admin_id = Session::get('admin_id');
         // $info = Admin::where('admin_id',$admin_id)->get();
         return view('admin.dashboard'); //->with(compact('info'));
+    }
+
+    public function filter_by_date(Request $request){
+        $data = $request->all();
+
+        $from_date = $data['from_date'];
+        $to_date = $data['to_date'];
+
+        $get = Statistical::whereBetween('order_date',[$from_date,$to_date])->orderBy('order_date','ASC')->get();
+
+        foreach($get as $key => $val){
+            $chart_data[] = array(
+                'period' => $val->order_date,
+                'sales' => $val->sales,
+                'profit' => $val->profit,
+                'quantity' => $val->quantity,
+                'order' => $val->total_order
+            );
+        }
+
+        // echo $data = json_encode($chart_data);  
+        dd($get);
     }
 
     public function login_admin(Request $request){
@@ -235,8 +258,8 @@ class AdminController extends Controller
         if($ad){
             $count_admin = $ad->count();
             if($count_admin == 0){
-            Toastr::error('Email chưa được đăng ký !!!','');
-            return redirect()->back();
+                Toastr::error('Email chưa được đăng ký !!!','');
+                return redirect()->back();
             }else{
                 $token_random = Str::random(6);
                 $admin = Admin::find($admin_id);

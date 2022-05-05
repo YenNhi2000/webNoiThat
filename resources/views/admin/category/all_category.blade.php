@@ -1,76 +1,16 @@
 @extends('admin_layout')
 @section('admin_content')
 
-<div class="tables" style="margin-top: -30px;">
-    <!-- <h2 class="title1">Danh sách thương hiệu sản phẩm</h2> -->
+<div class="tables">
     <div class="bs-example widget-shadow" data-example-id="hoverable-table"> 
         <h4 class="text-center text-uppercase">Danh sách danh mục sản phẩm</h4>
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs">
-                <!-- <select class="input-sm form-control w-sm inline v-middle">
-                    <option value="0">Bulk action</option>
-                    <option value="1">Delete selected</option>
-                    <option value="2">Bulk edit</option>
-                    <option value="3">Export</option>
-                </select> -->
-                
-                <!-- <button type="button" class="add" data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
-                <div id="modalAdd" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
-                        <div class="modal-content">
-                            <div class="modal-top">
-                                <h3 class="modal-title">Thêm danh mục sản phẩm</h3>
-                            </div>
-                            <div class="modal-body">
-                                <div class="form-update">
-                                    <form action="{{URL::to('/save-category-product')}}" method="post" id="formAdd"> 
-                                    
-                                        {{ csrf_field() }}
-
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Tên danh mục</label>
-                                            <input type="text" name="cat_name" class="form-control" data-validation="length" 
-                                                data-validation-length="min1" data-validation-error-msg="Bạn chưa nhập tên danh mục" >
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputEmail1">Slug</label>
-                                            <input type="text" name="cat_slug" class="form-control" data-validation="length" 
-                                                data-validation-length="min1" data-validation-error-msg="Bạn chưa nhập slug danh mục" >
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">Mô tả</label>
-                                            <textarea class="form-control" name="cat_desc" id="ckeditor" style="resize: none" rows="8" ></textarea>
-                                        </div>
-                                        <div class="form-group">
-                                            <label for="exampleInputPassword1">Hiển thị</label>
-                                            <select name="cat_status" class="form-control m-bot15">
-                                                <option value="0">Ẩn</option>
-                                                <option value="1">Hiển thị</option>
-                                            </select>
-                                        </div>
-                                        <div class="text-center">
-                                            <button type="submit" name="add_category_product" class="btn btn-update">Thêm</button>
-                                            <button type="button" class="btn btn-cancel" data-dismiss="modal">Hủy</button>
-                                        </div>
-                                    </form> 
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div> -->
                 <a href="{{url('/add-category-product')}}" class="add">Thêm mới</a>
+                <a href="{{url('/category-storage')}}" class="storage">Lưu trữ</a>
             </div>
-            <div class="col-sm-4"></div>
+            <div class="col-sm-7"></div>
         </div>
-        <!-- <div class="col-sm-3">
-            <div class="input-group">
-                <input type="text" class="input-sm form-control" placeholder="Search">
-                <span class="input-group-btn">
-                    <button class="btn btn-sm btn-default" type="button">Tìm</button>
-                </span>
-            </div>
-        </div> -->
-        
         <table class="table table-striped b-t b-light table-hover">
             <thead>
                 <tr>
@@ -82,8 +22,7 @@
                     <th>Tên danh mục</th>
                     <th>Slug</th>
                     <th>Trạng thái</th>
-                    <th style="width:30px;"></th>
-                    <th style="width:30px;"></th>
+                    <th style="width:70px;"></th>
                 </tr> 
             </thead>    
             <tbody> 
@@ -111,8 +50,6 @@
                         <a href="{{URL::to('/edit-category-product/'.$cat_pro->category_slug)}}" class="active edit" ui-toggle-class="">
                             <i class="fa fa-pencil-square-o text-success text-active" title="Chỉnh sửa"></i>
                         </a>
-                    </td>
-                    <td>
                         <a href="{{URL::to('/delete-category-product/'.$cat_pro->category_id)}}" class="active delete" onclick="return confirm('Bạn có muốn xóa danh mục này không?')" ui-toggle-class="">
                             <i class="fa fa-times text-danger text" title="Xóa"></i>
                         </a>
@@ -121,18 +58,27 @@
                 @endforeach
             </tbody> 
         </table>
+        
 <!-- import data -->
-        <form action="{{url('import-cate')}}" method="POST" enctype="multipart/form-data">
-            @csrf
-            <input type="file" name="file" accept=".xlsx"><br>
-            <input type="submit" value="Import" name="import_csv" title="Import file Excel" class="btn btn-warning">
-        </form>
+        <div class="row">
+            <form action="{{url('import-cate')}}" method="POST" enctype="multipart/form-data">
+                @csrf
+                <div class="col-sm-3">
+                    <input type="file" name="file" accept=".xlsx"><br>
+                </div>
+                <div class="col-sm-1">
+                    <input type="submit" value="Import" name="import_csv" title="Import file Excel" class="btn btn-warning">
+                </div>
+            </form>
 
 <!-- export data -->
-        <form action="{{url('export-cate')}}" method="POST">
-            @csrf
-            <input type="submit" value="Export" name="export_csv" title="Export file Excel" class="btn btn-success">
-        </form>
+            <form action="{{url('export-cate')}}" method="POST">
+                @csrf
+                <div class="col-sm-1">
+                    <input type="submit" value="Export" name="export_csv" title="Export file Excel" class="btn btn-success">
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 
