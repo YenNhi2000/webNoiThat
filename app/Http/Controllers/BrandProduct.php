@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Ex_Brand;
 use App\Imports\Im_Brand;
+use App\Models\Customer;
 
 session_start();
 
@@ -164,6 +165,9 @@ class BrandProduct extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         $brand_by_id = DB::table('tbl_product')
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')
             ->where('tbl_product.brand_slug', $brand_slug)->get();
@@ -171,6 +175,6 @@ class BrandProduct extends Controller
         $brand_name = Brand::where('brand_slug', $brand_slug)->limit(1)->get();
 
         return view('pages.brand.show_brand')
-            ->with(compact('cat_pro','brand_pro','type_pro','feature_pro','brand_by_id','brand_name', 'url_canonical'));
+            ->with(compact('cat_pro','brand_pro','type_pro','feature_pro','brand_by_id','brand_name', 'url_canonical', 'result'));
     }
 }

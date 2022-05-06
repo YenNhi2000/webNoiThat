@@ -21,7 +21,7 @@
                     <th>Mã đơn hàng</th>
                     <th>Ngày đặt hàng</th>
                     <th>Tình trạng đặt hàng</th>
-                    <th style="width:60px;"></th>
+                    <th>Lý do hủy đơn</th>
                 </tr> 
             </thead>    
             <tbody> 
@@ -31,18 +31,15 @@
                     <td>{{ $val->order_code }}</td>
                     <td>{{ $val->created_at }}</td>
                     <td>
-                        @if($val->order_status==1)
-                            <span class="text text-success">Đơn hàng mới</span>
-                        @elseif($val->order_status==2)
-                            <span class="text text-primary">Đã xử lý - Đã giao hàng</span>
-                        @else
+                        @if($val->order_status==3)
                             <span class="text text-danger">Đơn hàng đã bị hủy</span>
                         @endif
                     </td>
                     <td>
-                        <a href="{{URL::to('/restore-order/'.$val->order_id)}}" class="active " onclick="return confirm('Bạn có muốn khôi phục đơn hàng này không?')">
+                        {{ $val->cancel_order }}
+                        <!-- <a href="{{URL::to('/restore-order/'.$val->order_id)}}" class="active " onclick="return confirm('Bạn có muốn khôi phục đơn hàng này không?')">
                             <i class="fa fa-undo" title="Khôi phục"></i>
-                        </a>
+                        </a> -->
                     </td>
                 </tr>
                 @endforeach

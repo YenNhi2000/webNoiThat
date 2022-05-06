@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Customer;
 use App\Models\Product;
 use App\Models\Type;
 use Illuminate\Support\Facades\Redirect;
@@ -27,7 +28,11 @@ class HomeController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
-        return view('pages.home')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'feature_pro', 'new_product', 'url_canonical'));
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
+        return view('pages.home')
+            ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'feature_pro', 'new_product', 'url_canonical', 'result'));
     }
 
     public function search(Request $request){
@@ -38,13 +43,17 @@ class HomeController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         $key = $request->keywords;
         $search_pro = Product::where('product_name', 'like', '%'.$key.'%')->get();
 
         Session::put('search', "Từ khóa: ".$key);
 
         if ($search_pro){
-            return view('pages.product.search')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'search_pro', 'url_canonical'));
+            return view('pages.product.search')
+                ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'search_pro', 'url_canonical', 'result'));
         }else{
             Session::put('message', "Không tìm thấy sản phẩm");
             return view('pages.product.search');

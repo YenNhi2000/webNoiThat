@@ -539,6 +539,17 @@ a.animated-button.gibson-three:hover:after {
 
 /*-- //login --*/
 
+/* Thông tin khách hàng */
+.info_login{
+    min-width: 400px;
+    margin-bottom: 40px;
+    text-align: center;
+}
+
+.info_login label {
+	color: #848484;
+	letter-spacing: 1px;
+}
 /* New pass */
 
 input.form-control.re-pass {
@@ -2632,4 +2643,31 @@ ul.links li a:hover {
 /* Sản phẩm nổi bật */
 .container-fluid ul.list-inline li.rating {
     margin-top: 5px;
+}
+
+/* Lịch sử đơn hàng */
+a.btn.btn-primary.active {
+    font-size: 12px;
+    padding: 7px 14px;
+    border-radius: 3px;
+}
+button.btn.btn-danger.destroy {
+    font-size: 13px;
+}
+#huydon .modal-header {
+    padding: 0;
+}
+#huydon .modal-title {
+    padding: 20px 10px 0px 30px;
+}
+#huydon textarea.lydohuydon {
+    width: 100%;
+    border: none;
+    background: #f0f0f0;
+    padding: 10px;
+    outline: none;
+}
+#huydon .modal-footer {
+    border-top:none;
+    padding:0 25px 20px 25px;
 }

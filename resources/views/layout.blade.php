@@ -90,9 +90,9 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 									</button>
 									<div class="wrap">
 										<h5 class="text-center mb-4">Thông tin cá nhân</h5>
-										<div class="login p-5 bg-dark mx-auto mw-100">
+										<div class="info_login p-5 bg-dark mx-auto mw-100">
 											<div class="form-group">
-												<label class="mb-2">Họ tên: 
+												<label class="mb-2">Họ và tên: 
 													<span>
 														<?php
 															echo $name;
@@ -101,10 +101,10 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 												</label>
 											</div>
 											<div class="form-group">
-												<label class="mb-2">Số điện thoại: <span></span></label>
+												<label class="mb-2">Số điện thoại: {{$result->customer_phone}}<span></span></label>
 											</div>
 											<div class="form-group">
-												<label class="mb-2">Email: <span></span></label>
+												<label class="mb-2">Email: {{$result->customer_email}}<span></span></label>
 											</div>
 										</div>
 
@@ -986,7 +986,7 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				success:function(data)
 				{
 					if(data == 'done')
-						alert("Bạn đã đánh giá "+index +" trên 5");
+						alert("Bạn đã đánh giá "+ index +" trên 5");
 					else
 						alert("Lỗi đánh giá");
 				}
@@ -994,6 +994,26 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		});
 	</script>
 <!-- //Rating -->
+
+<!-- Hủy đơn hàng -->
+	<script type="text/javascript">
+        function huydonhang(id){
+            var order_code = id;
+            var lydo = $('.lydohuydon').val();
+            var _token = $('input[name="_token"]').val();
+
+            $.ajax({
+                url:"{{url('/huy-don-hang')}}",
+                method:"POST",
+                data:{order_code:order_code, lydo:lydo, _token:_token},
+                success:function(data){
+                    alert('Hủy đơn hàng thành công');
+                    location.reload(); 
+                }
+            }); 
+        }
+    </script>
+<!-- //Hủy đơn hàng -->
 
 <!-- Validator -->
 	<script src="{{asset('public/frontend/js/jquery.form-validator.min.js')}}"></script>

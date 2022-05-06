@@ -230,7 +230,10 @@ class CustomerController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
-        return view('pages.account.change_pass')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical'));
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
+        return view('pages.account.change_pass')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical', 'result'));
     }
 
     public function confirm_pass(Request $request){
@@ -385,12 +388,26 @@ class CustomerController extends Controller
         $this->AuthLoginCus();
 
         $url_canonical = $request->url();
+        
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
         
         $order = Order::where('customer_id', Session::get('customer_id'))->orderBy('order_id','desc')->limit(10)->get();
         
-        return view('pages.history.history_order')->with(compact('cat_pro','url_canonical', 'order'));
+        return view('pages.history.history_order')->with(compact('cat_pro','url_canonical', 'result', 'order'));
     }
+
+    public function cancel_order(Request $request){
+		$data = $request->all();
+
+		$order = Order::where('order_code', $data['order_code'])->first();
+		$order->order_status = 3;
+		$order->order_storage = 1;
+		$order->cancel_order = $data['lydo'];
+		$order->save();
+	}
 
     public function view_history(Request $request, $orderCode){
         $this->AuthLoginCus();
@@ -398,6 +415,9 @@ class CustomerController extends Controller
         // menu
         $url_canonical = $request->url();
         $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
+
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
         
         // chi tiết sản phẩm
         $order_details = OrderDetails::with('product')->where('order_code',$orderCode)->get();
@@ -441,7 +461,7 @@ class CustomerController extends Controller
         // }
         
         return view('pages.history.view_history')
-            ->with(compact('cat_pro','url_canonical', 'order', 'order_details', 'shipping', 'payment',
+            ->with(compact('cat_pro','url_canonical', 'result', 'order', 'order_details', 'shipping', 'payment',
             'cus_rating','money','coupon'));
     }
 
@@ -452,6 +472,9 @@ class CustomerController extends Controller
         
         // Seo  
         $url_canonical = $request->url();
+
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
 
         // tên sp trong banner
         $pro_name = Product::where('product_slug',$pro_slug)->limit(1)->get();
@@ -489,7 +512,7 @@ class CustomerController extends Controller
             ->orderBy('tbl_product.avg_star','desc')->whereNotIn('tbl_product.product_slug', [$pro_slug])->get();
 
         return view('pages.product.show_details')
-            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'pro_name', 'details_pro', 
+            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'result', 'pro_name', 'details_pro', 
             'gallery', 'rating', 'cus_rating', 'orderCode', 'order_product', 'cus_name', 'related_pro'));
     }
 }

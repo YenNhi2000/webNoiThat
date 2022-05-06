@@ -47,17 +47,15 @@
                             <span class="text text-success">Đơn hàng mới</span>
                         @elseif($order->order_status==2)
                             <span class="text text-primary">Đã xử lý - Đã giao hàng</span>
-                        @else
-                            <span class="text text-danger">Đơn hàng đã bị hủy</span>
                         @endif
                     </td>
                     <td>
                         <a href="{{URL::to('/view-order/'.$order->order_code)}}" class="active view" ui-toggle-class="">
                             <i class="fa fa-eye text-active" title="Xem"></i>
                         </a>
-                        <a href="{{URL::to('/delete-order/'.$order->order_id)}}" class="active delete" onclick="return confirm('Bạn có muốn xóa đơn hàng này không?')">
+                        <!-- <a href="{{URL::to('/delete-order/'.$order->order_id)}}" class="active delete" onclick="return confirm('Bạn có muốn xóa đơn hàng này không?')">
                             <i class="fa fa-times text-danger text" title="Xóa"></i>
-                        </a>
+                        </a> -->
                     </td>
                 </tr>
                 @endforeach

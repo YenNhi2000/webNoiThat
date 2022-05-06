@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 
 use App\Imports\Im_Cate;
 use App\Exports\Ex_Cate;
+use App\Models\Customer;
 use Maatwebsite\Excel\Facades\Excel;
 
 session_start();
@@ -148,6 +149,9 @@ class CategoryProduct extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         $cat_name = DB::table('tbl_category')
             ->join('tbl_product','tbl_product.cat_id', '=', 'tbl_category.category_id')
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')
@@ -230,7 +234,7 @@ class CategoryProduct extends Controller
         // $max_price = Product::max('product_price');
 
         return view('pages.category.show_cat')
-            ->with(compact('cat_pro','brand_pro','type_pro','feature_pro', 'cat_by_id', 'cat_name', 'url_canonical'));
+            ->with(compact('cat_pro','brand_pro','type_pro','feature_pro', 'cat_by_id', 'cat_name', 'url_canonical', 'result'));
             // 'min_price', 'max_price'));
     }
 }

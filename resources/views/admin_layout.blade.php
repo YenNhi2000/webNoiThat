@@ -270,22 +270,15 @@
                                 <div class="form-update">
                                     <div class="form-group">
                                         <label>Họ và tên: </label>
-                                        <span>
-                                            <?php
-                                                $name = Session::get('admin_name');
-                                                if ($name){
-                                                    echo $name;
-                                                }
-                                            ?>
-                                        </span>
+                                        <span>{{$info->admin_name}}</span>
                                     </div>
                                     <div class="form-group">
                                         <label>Số điện thoại: </label>
-                                        <span></span>
+                                        <span>{{$info->admin_phone}}</span>
                                     </div>
                                     <div class="form-group">
                                         <label>Email: </label>
-                                        <span></span>
+                                        <span>{{$info->admin_email}}</span>
                                     </div>
                                 </div>
                             </div>

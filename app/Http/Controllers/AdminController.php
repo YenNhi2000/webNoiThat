@@ -46,9 +46,11 @@ class AdminController extends Controller
 
     public function show_dashboard(){
         $this->AuthLogin();
-        // $admin_id = Session::get('admin_id');
-        // $info = Admin::where('admin_id',$admin_id)->get();
-        return view('admin.dashboard'); //->with(compact('info'));
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first(); 
+
+        return view('admin.dashboard')->with(compact('info'));
     }
 
     public function filter_by_date(Request $request){

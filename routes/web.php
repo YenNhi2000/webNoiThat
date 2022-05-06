@@ -25,6 +25,7 @@ Route::post('/quickview','ProductController@quickview');
 Route::get('/dang-xuat', 'CustomerController@logout');
 
 Route::get('/lich-su-don-hang', 'CustomerController@history_order');
+Route::post('/huy-don-hang', 'CustomerController@cancel_order');
 Route::get('/chi-tiet-don-hang/{orderCode}','CustomerController@view_history');
 Route::get('/chi-tiet-san-pham/{orderCode}/{pro_slug}','CustomerController@order_details_product');
 

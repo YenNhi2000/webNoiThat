@@ -287,6 +287,9 @@ class ProductController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         // tên sp trong banner
         $pro_name = Product::where('product_slug',$pro_slug)->limit(1)->get();
 
@@ -324,7 +327,7 @@ class ProductController extends Controller
             ->whereNotIn('tbl_product.product_slug', [$pro_slug])->limit(8)->get();
 
         return view('pages.product.show_details')
-            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'pro_name', 'details_pro', 
+            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'result', 'pro_name', 'details_pro', 
             'gallery', 'rating', 'cus_rating', 'order_product', 'cus_name', 'related_pro'));
     }
 
@@ -378,6 +381,7 @@ class ProductController extends Controller
         $pro_id = $request->product_id;
         $cmt_name = $request->comment_name;
         $cmt_content = $request->comment_content;
+
         $cmt = new Comment();
         $cmt->comment_name = $cmt_name;
         $cmt->comment = $cmt_content;

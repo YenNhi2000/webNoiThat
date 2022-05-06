@@ -32,7 +32,11 @@ class CartController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
-        return view('pages.cart.show_cart')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'coupon', 'url_canonical'));
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
+        return view('pages.cart.show_cart')
+            ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'coupon', 'url_canonical', 'result'));
     }
 
     public function add_cart(Request $request){
@@ -171,16 +175,21 @@ class CartController extends Controller
         // Seo  
         $url_canonical = $request->url();
 
+        // Thông tin khách hàng
+        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
+
         $customer_id = Session::get('customer_id');
         $shipping = DB::table('tbl_shipping')
             ->join('tbl_customers', 'tbl_shipping.customer_id', '=', 'tbl_customers.customer_id')
             ->where('tbl_customers.customer_id', $customer_id)->orderBy('shipping_id','desc')->limit(1)->get();
 
         if ($customer_id){
-            return view('pages.cart.payment')->with(compact('cat_pro', 'brand_pro', 'type_pro', 'shipping', 'url_canonical'));
+            return view('pages.cart.payment')
+                ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'shipping', 'url_canonical', 'result'));
         }
         else{
-            return view('pages.account.login')->with(compact('cat_pro','brand_pro','type_pro','shipping', 'url_canonical'));
+            return view('pages.account.login')
+                ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'shipping', 'url_canonical', 'result'));
         }
     }
 
@@ -304,7 +313,7 @@ class CartController extends Controller
             Session::forget('coupon');
             // Session::forget('fee');
             Session::forget('cart');
-            return Redirect::to('/');
+            return Redirect::to('/lich-su-don-hang');
         }
     }
 // End Payment

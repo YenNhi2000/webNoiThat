@@ -30,7 +30,7 @@
                         <th>Mã đơn hàng</th>
                         <th>Ngày đặt hàng</th>
                         <th>Tình trạng đặt hàng</th>
-                        <th></th>
+                        <th style="width: 300px;"></th>
                     </tr> 
                 </thead>    
                 <tbody class="staffList"> 
@@ -57,9 +57,36 @@
                             @endif
                         </td>
                         <td>
-                            <a href="{{URL::to('/chi-tiet-don-hang/'.$ord->order_code)}}" class="active view" ui-toggle-class="">
+                            <a href="{{URL::to('/chi-tiet-don-hang/'.$ord->order_code)}}" class="btn btn-primary active" ui-toggle-class="">
                                 Xem chi tiết
                             </a>
+                            
+                            @if($ord->order_status!=3)
+
+                            <!-- Trigger the modal with a button -->
+                            <button type="button" class="btn btn-danger destroy" data-toggle="modal" data-target="#huydon">Hủy đơn hàng</button>
+                            @endif
+                            <!-- Modal -->
+                            <div id="huydon" class="modal fade" role="dialog">
+                                <div class="modal-dialog">
+                                    <form>
+                                        @csrf
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h4 class="modal-title">Lý do hủy đơn hàng</h4>
+                                            </div>
+                                            <div class="modal-body">
+                                                <textarea rows="5" class="lydohuydon" required placeholder="Lý do hủy đơn hàng....(bắt buộc)"></textarea>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-default" data-dismiss="modal">Đóng</button>
+                                                <button type="button" id="{{ $ord->order_code }}" onclick="huydonhang(this.id)" class="btn btn-success">Gửi</button>    <!-- this.id (id=ord->order_code) -->
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
                             <!-- <a href="{{URL::to('/delete-order/'.$ord->order_id)}}" class="active delete" onclick="return confirm('Bạn có muốn xóa đơn hàng này không?')">
                                 <i class="fa fa-times text-danger text" title="Xóa"></i>
                             </a> -->
