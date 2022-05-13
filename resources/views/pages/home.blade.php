@@ -19,7 +19,7 @@
                     <!-- <h3>Men’s eyewear
                         <span>Cool summer sale 50% off</span>
                     </h3> -->
-                    <a href="shop.html" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
+                    <a href="#" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
                 </div>
             </div>
             <div class="carousel-item item2">
@@ -27,7 +27,7 @@
                     <!-- <h3>Women’s eyewear
                         <span>Want to Look Your Best?</span>
                     </h3> -->
-                    <a href="shop.html" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
+                    <a href="#" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
 
                 </div>
             </div>
@@ -36,7 +36,7 @@
                     <!-- <h3>Men’s eyewear
                         <span>Cool summer sale 50% off</span>
                     </h3> -->
-                    <a href="shop.html" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
+                    <a href="#" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
 
                 </div>
             </div>
@@ -45,7 +45,7 @@
                     <h3>Giường cao cấp
                         <span>Giấc ngủ tuyệt vời</span>
                     </h3>
-                    <a href="shop.html" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
+                    <a href="#" class="btn btn-sm animated-button gibson-three mt-4">Xem ngay</a>
                 </div>
             </div>
         </div>
@@ -84,6 +84,46 @@
                                     </div>
                                     <!-- <span class="product-new-top">New</span> -->
                                 </div>
+                                
+                                <div id="xemnhanh" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- <div class="modal-header">
+                                            </div> -->
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <span id="pro_quickview_image"></span>
+                                                        <span id="pro_quickview_gallery"></span>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                                        <h5 id="pro_quickview_title"></h5>
+                                                        <small>Mã sản phẩm: <span id="pro_quickview_id"></span></small>
+                                                        <h4>
+                                                            <span id="pro_quickview_price"></span>
+                                                        </h4><hr/>
+
+                                                        <label>Số lượng:</label>
+                                                        <input type="number" name="qty" min="1" class="cart_product_qty" value="1" />
+                                                        <!-- <input type="hidden" name="proid_hidden" value="" /> -->
+
+                                                        <h5 class="detail">Mô tả sản phẩm:</h5>
+                                                        <span id="pro_quickview_desc"></span>
+                                                        <h5 class="detail">Hướng dẫn bảo quản:</h5>
+                                                        <span id="pro_quickview_content"></span>
+                                                        <input type="button" value="Mua ngay" class="btn-quickview" data-id_pro="">
+                                                        <!-- <p>hoặc <a id="pro_quickview_slug" href="{{URL::to('/chi-tiet-san-pham/'.$pro->product_slug)}}">Xem chi tiết</a></p> -->
+                                                    </div>
+                                                </div>                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
                                 <div class="item-info-product">
                                     <div class="info-product-price">
                                         <div class="grid_meta">
@@ -280,45 +320,7 @@
                 </div>
             </div>
 
-            <div id="xemnhanh" class="modal fade" role="dialog">
-                <div class="modal-dialog modal-lg">
-
-                    <!-- Modal content-->
-                    <div class="modal-content">
-                        <!-- <div class="modal-header">
-                        </div> -->
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-5">
-                                    <span id="pro_quickview_image"></span>
-                                    <span id="pro_quickview_gallery"></span>
-                                </div>
-                                <div class="col-md-7">
-                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-
-                                    <h5 id="pro_quickview_title"></h5>
-                                    <small>Mã sản phẩm: <span id="pro_quickview_id"></span></small>
-                                    <h4>
-                                        <span id="pro_quickview_price"></span>
-                                    </h4><hr/>
-
-                                    <label>Số lượng:</label>
-                                    <input type="number" name="qty" min="1" class="cart_product_qty" value="1" />
-                                    <!-- <input type="hidden" name="proid_hidden" value="" /> -->
-
-                                    <h5 class="detail">Mô tả sản phẩm:</h5>
-                                    <span id="pro_quickview_desc"></span>
-                                    <h5 class="detail">Hướng dẫn bảo quản:</h5>
-                                    <span id="pro_quickview_content"></span>
-                                    <input type="button" value="Mua ngay" class="btn-quickview" data-id_pro="">
-                                    <p>hoặc <a href="">Xem chi tiết</a></p>
-                                </div>
-                            </div>                        
-                        </div>
-                    </div>
-
-                </div>
-            </div>
+            
 
         </div>
     </div>

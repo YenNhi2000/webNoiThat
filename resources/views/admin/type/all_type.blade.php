@@ -9,7 +9,7 @@
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs"> 
                 <a href="{{url('/add-type-product')}}" class="add">Thêm mới</a>
-                <a href="{{url('/type-storage')}}" class="storage">Lưu trữ</a>
+                <a href="{{url('/type-storage')}}" class="storage">Thùng rác</a>
             </div>
             <div class="col-sm-7"></div>
         </div>

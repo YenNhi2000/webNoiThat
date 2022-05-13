@@ -2,23 +2,23 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Brand;
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Coupon;
 use App\Models\Customer;
-use App\Models\Gallery;
 use App\Models\Order;
 use App\Models\OrderDetails;
 use App\Models\Payment;
 use App\Models\Product;
-use App\Models\Rating;
 use App\Models\Shipping;
 use App\Models\Type;
-use Illuminate\Support\Str;
 use Carbon\Carbon;
+use Illuminate\Support\Str;
+use Illuminate\Http\Request;
 use Brian2694\Toastr\Facades\Toastr;
 use Illuminate\Support\Facades\Mail;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Redirect;
@@ -37,8 +37,12 @@ class CustomerController extends Controller
 
     public function all_customer(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $all_customer = Customer::where('customer_storage','0')->orderBy('customer_id','desc')->get();
-        return view('admin.customer.all_customer')->with(compact('all_customer'));
+        return view('admin.customer.all_customer')->with(compact('info','all_customer'));
     } 
 
     public function search(Request $request){
@@ -87,8 +91,11 @@ class CustomerController extends Controller
     public function customer_storage(){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $storage = Customer::where('customer_storage','1')->orderBy('customer_id','desc')->get();
-        return view('admin.customer.storage')->with(compact('storage'));
+        return view('admin.customer.storage')->with(compact('info','storage'));
     }
 
     public function restore_customer($customer_id){
@@ -115,7 +122,7 @@ class CustomerController extends Controller
         $data = $request->all();
 
         if ($data['query']){
-            $product = Product::where('product_status', 1)->where('product_name', 'LIKE', '%'.$data['query'].'%')->get();   //->orWhere()
+            $product = Product::where('product_status', 1)->where('product_name', 'LIKE', '%'.$data['query'].'%')->orderBy('avg_star','desc')->get();   //->orWhere()
             $output = '<ul class="dropdown-menu" style="display:block;">';
             foreach($product as $key => $val){
                 $output .='
@@ -248,7 +255,7 @@ class CustomerController extends Controller
             'old_pass.required' => 'Bạn chưa nhập mật khẩu hiện tại',
             'new_pass.required' => 'Bạn chưa nhập mật khẩu mới',
             'new_pass.min' => 'Mật khẩu mới của bạn quá yếu',
-            're_new_pass.required' => 'Bạn chưa nhập lại mật khẩu mới',
+            're_new_pass.required' => 'Bạn chưa xác nhận mật khẩu mới',
             're_new_pass.same' => 'Mật khẩu nhập lại của bạn không trùng khớp',
         ]);
 
@@ -433,14 +440,6 @@ class CustomerController extends Controller
         $customer = Customer::where('customer_id',$customer_id)->first();
         $shipping = Shipping::where('shipping_id',$shipping_id)->first();
         $payment = Payment::where('payment_id',$payment_id)->first();
-        
-        // Đánh giá sao
-        foreach($order_details as $key => $value){
-            $product_id = $value->product_id;
-            $ord_detail = $value->details_id;
-        }
-        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
-            ->where('product_id', $product_id)->where('ord_detail_id', $ord_detail)->first();
 
         // Tính tổng tiền
         $money = Order::where('order_code', $orderCode)->first();
@@ -462,57 +461,18 @@ class CustomerController extends Controller
         
         return view('pages.history.view_history')
             ->with(compact('cat_pro','url_canonical', 'result', 'order', 'order_details', 'shipping', 'payment',
-            'cus_rating','money','coupon'));
+            'money','coupon'));
     }
 
-    public function order_details_product(Request $request, $orderCode, $pro_slug) {
-        $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
-        $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','desc')->get();
-        $type_pro = Type::where('type_status','1')->orderBy('type_id','desc')->get();
+    public function load_cmt_rating(Request $request){
+        $det_id = $request->ord_det_id;
+        $pro_id = $request->product_id;
         
-        // Seo  
-        $url_canonical = $request->url();
-
-        // Thông tin khách hàng
-        $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
-
-        // tên sp trong banner
-        $pro_name = Product::where('product_slug',$pro_slug)->limit(1)->get();
-
-        // Chi tiết sản phẩm
-        $details_pro = DB::table('tbl_product')
-            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
-            ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
-            ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
-            ->where('tbl_product.product_slug',$pro_slug)->get();
-
-        foreach($details_pro as $key => $value){
-            $product_id = $value->product_id;
-        }
-
-        $gallery = Gallery::where('product_id', $product_id)->get();
-
-        $rating = Rating::where('product_id', $product_id)->avg('rating');  //lấy trung bình số sao
-        $rating = round($rating);   //làm tròn
-
-        // Đánh giá
-        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
-            ->where('product_id', $product_id)->orderBy('rating_id','desc')->first();
-
+        $cmt = Comment::where('comment_pro_id', $pro_id)->where('ord_detail_id',$det_id)
+            ->where('comment_parent_comment',0)->where('comment_status',0)->first();
         
-        // Bình luận
-        $order_product = OrderDetails::with('product')->where('product_id', $product_id)->first();
-        $cus_name = Customer::where('customer_id', Session::get('customer_id'))->first();
+        $output = '<textarea name="comment" class="comment_content">'.$cmt->comment.'</textarea>';
 
-        // Sản phẩm nổi bật theo số sao đánh giá
-        $related_pro = DB::table('tbl_product')
-            ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')           
-            ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
-            ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
-            ->orderBy('tbl_product.avg_star','desc')->whereNotIn('tbl_product.product_slug', [$pro_slug])->get();
-
-        return view('pages.product.show_details')
-            ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'result', 'pro_name', 'details_pro', 
-            'gallery', 'rating', 'cus_rating', 'orderCode', 'order_product', 'cus_name', 'related_pro'));
+        echo $output;
     }
 }

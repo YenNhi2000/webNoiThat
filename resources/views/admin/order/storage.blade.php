@@ -8,7 +8,7 @@
                 <i class="fa fa-chevron-left back"></i>Quay về
             </a>
         </div>
-        <h4 class="text-center text-uppercase">Danh sách lưu trữ</h4>
+        <h4 class="text-center text-uppercase">Danh sách đơn hủy</h4>
 
         <table class="table table-striped b-t b-light table-hover">
             <thead>

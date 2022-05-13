@@ -14,6 +14,7 @@ html, body{
   font-size: 100%;
   overflow-x: hidden;
 	background: #fff;
+  height: 100%;
 }
 body a{
 	transition: 0.5s all ease;
@@ -38,6 +39,7 @@ body a:hover{
 }
 .main-content {
     position: relative;
+    /* height:100%; */
 }
 .sidebar-left .navbar-brand {
     height: 61px;
@@ -2404,7 +2406,7 @@ h4.modal-title {
     transition:  0.5s all;
 }
 .r3_counter_box {
-  min-height: 100px;
+  min-height: 128px;
   background: #ffffff;
   padding: 15px;
 }
@@ -8598,7 +8600,7 @@ h4.asd label {
 
 .main-page.login-page {
   width: 450px;
-  margin: 0 auto;
+  margin: 35px auto;
 }
 
 span.text-alert {
@@ -8785,4 +8787,37 @@ button.btn.btn-search {
 
 div.tables {
   margin-top: 2em;
+}
+a.btn-cancel-order{
+    background-color: #fe2e2e;
+    border: 1px solid #fe2e2e;
+    border-radius: 12px;
+    padding: 7px 12px;
+    margin-bottom: 20px;
+    color: #fff;
+}
+a.btn-cancel-order:hover{
+  background-color: #b40404;
+  border: 1px solid #b40404;
+}
+
+/* Dashboard */
+.tables.dashboard .widget {
+  width: 23.8%;
+  box-shadow: 0px 0px 5px -2px rgb(0 0 0 / 75%);
+}
+
+.r3_counter_box {
+  padding: 33px 15px;
+}
+
+.stats span{
+	color:#777;
+	font-size:20px;
+}
+.r3_counter_box h5 {
+  margin: 0 0 5px 0;
+  color:#000;
+  font-weight:600;
+  font-size: 25px;
 }

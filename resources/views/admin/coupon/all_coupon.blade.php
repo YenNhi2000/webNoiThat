@@ -8,7 +8,7 @@
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs">                
                 <button type="button" class="add_coupon" data-toggle="modal" data-target="#modalAdd">Thêm mới</button>
-                <a href="{{url('/coupon-storage')}}" class="storage">Lưu trữ</a>
+                <a href="{{url('/coupon-storage')}}" class="storage">Thùng rác</a>
                 <div id="modalAdd" class="modal fade" role="dialog">
                     <div class="modal-dialog">
 

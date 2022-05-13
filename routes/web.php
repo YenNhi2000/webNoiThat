@@ -27,7 +27,8 @@ Route::get('/dang-xuat', 'CustomerController@logout');
 Route::get('/lich-su-don-hang', 'CustomerController@history_order');
 Route::post('/huy-don-hang', 'CustomerController@cancel_order');
 Route::get('/chi-tiet-don-hang/{orderCode}','CustomerController@view_history');
-Route::get('/chi-tiet-san-pham/{orderCode}/{pro_slug}','CustomerController@order_details_product');
+
+Route::post('/load-cmt-rating','CustomerController@load_cmt_rating');
 
 //Register
 Route::get('/dang-ky', 'CustomerController@register');
@@ -81,9 +82,13 @@ Route::post('/confirm-order','CartController@confirm_order');
 Route::get('/admin','AdminController@index');
 
 Route::get('/dashboard','AdminController@show_dashboard');
-Route::post('/filter-by-date','AdminController@filter_by_date');
-
 Route::get('/logout','AdminController@logout');
+
+// Thống kê
+Route::post('/filter-by-date','AdminController@filter_by_date');
+Route::post('/dashboard-filter','AdminController@dashboard_filter');
+Route::get('/order-date','AdminController@order_date');
+Route::post('/days-order','AdminController@days_order');
 
 // Login
 Route::post('/login-admin','AdminController@login_admin');

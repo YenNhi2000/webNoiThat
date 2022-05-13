@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 
 use App\Imports\Im_Cate;
 use App\Exports\Ex_Cate;
+use App\Models\Admin;
 use App\Models\Customer;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -32,8 +33,12 @@ class CategoryProduct extends Controller
 
     public function all_category_product(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $all_cat = Category::where('category_storage','0')->orderBy('category_id','desc')->get();
-        return view('admin.category.all_category')->with(compact('all_cat'));
+        return view('admin.category.all_category')->with(compact('info','all_cat'));
     }
 
     public function import_cate(Request $request){
@@ -48,7 +53,11 @@ class CategoryProduct extends Controller
 
     public function add_category_product(){
         $this->AuthLogin();
-        return view('admin.category.add_category');
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
+        return view('admin.category.add_category')->with(compact('info'));
     }
 
     public function save_category_product(Request $request){
@@ -94,8 +103,12 @@ class CategoryProduct extends Controller
 
     public function edit_category_product($cat_slug){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $edit_category_product = Category::where('category_slug', $cat_slug)->get();
-        return view('admin.category.edit_category')->with(compact('edit_category_product'));
+        return view('admin.category.edit_category')->with(compact('info','edit_category_product'));
     }
 
     public function update_category_product(Request $request, $cat_id){
@@ -124,8 +137,11 @@ class CategoryProduct extends Controller
     public function category_storage(){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $storage = Category::where('category_storage','1')->orderBy('category_id','desc')->get();
-        return view('admin.category.storage')->with(compact('storage'));
+        return view('admin.category.storage')->with(compact('info','storage'));
     }
 
     public function restore_category($category_id){
@@ -144,7 +160,7 @@ class CategoryProduct extends Controller
         $cat_pro = Category::where('category_status','1')->orderBy('category_id','asc')->get();
         $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','asc')->get();
         $type_pro = Type::where('type_status','1')->orderBy('type_id','asc')->get();
-        $feature_pro = Product::where('product_status','1')->orderBy('product_id','desc')->limit(6)->get();
+        $feature_pro = Product::where('product_status','1')->orderBy('avg_star','desc')->limit(6)->get();
 
         // Seo  
         $url_canonical = $request->url();

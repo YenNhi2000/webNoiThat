@@ -8,6 +8,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Admin;
+use App\Models\Comment;
+use App\Models\Customer;
+use App\Models\Order;
+use App\Models\Product;
 use App\Models\Social;
 use App\Models\Statistical;
 use Laravel\Socialite\Facades\Socialite;
@@ -47,33 +51,107 @@ class AdminController extends Controller
     public function show_dashboard(){
         $this->AuthLogin();
 
-        // Thông tin admin
-        $info = Admin::where('admin_id', Session::get('admin_id'))->first(); 
+        //Total
+        $app_product = Product::all()->count();
+        $app_customer = Customer::all()->count();
+        $app_order = Order::all()->count();
+        $app_comment = Comment::all()->count();
 
-        return view('admin.dashboard')->with(compact('info'));
+        $product_views = Product::orderBy('product_views','DESC')->take(10)->get();
+
+        return view('admin.dashboard')->with(compact('app_product','app_customer','app_order','app_comment','product_views'));
     }
 
+// Thống kê
     public function filter_by_date(Request $request){
         $data = $request->all();
 
         $from_date = $data['from_date'];
         $to_date = $data['to_date'];
 
-        $get = Statistical::whereBetween('order_date',[$from_date,$to_date])->orderBy('order_date','ASC')->get();
+        $statistic = Statistical::whereBetween('order_date', [$from_date,$to_date])->orderBy('order_date','ASC')->get();
+        // whereDate('order_date','>=',$from_date)->whereDate('order_date','<=',$to_date)->orderBy('order_date','desc')->get();
 
-        foreach($get as $key => $val){
+        foreach($statistic as $key => $val){
             $chart_data[] = array(
-                'period' => $val->order_date,
-                'sales' => $val->sales,
-                'profit' => $val->profit,
+                'period' => $val->order_date,       // khoảng t/g
+                'sales' => $val->sales,             // doanh số
+                'profit' => $val->profit,           //lợi nhuận
                 'quantity' => $val->quantity,
                 'order' => $val->total_order
             );
         }
-
-        // echo $data = json_encode($chart_data);  
-        dd($get);
+        echo $data = json_encode($chart_data);
     }
+
+    public function dashboard_filter(Request $request){
+        $data = $request->all();
+    
+        $dauthangnay = Carbon::now('Asia/Ho_Chi_Minh')->startOfMonth()->toDateString();
+        $dau_thangtruoc = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->startOfMonth()->toDateString();
+        $cuoi_thangtruoc = Carbon::now('Asia/Ho_Chi_Minh')->subMonth()->endOfMonth()->toDateString();
+    
+        $sub7days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(7)->toDateString();
+        $sub365days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(365)->toDateString();
+
+    
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+    
+        if($data['dashboard_value'] == '7ngay'){
+    
+            $statistic = Statistical::whereBetween('order_date', [$sub7days,$now])->orderBy('order_date','ASC')->get();
+    
+        }elseif($data['dashboard_value']=='thangtruoc'){
+    
+            $statistic = Statistical::whereBetween('order_date', [$dau_thangtruoc,$cuoi_thangtruoc])->orderBy('order_date','ASC')->get();
+    
+        }elseif($data['dashboard_value']=='thangnay'){
+    
+            $statistic = Statistical::whereBetween('order_date', [$dauthangnay,$now])->orderBy('order_date','ASC')->get();
+    
+        }else{
+            $statistic = Statistical::whereBetween('order_date', [$sub365days,$now])->orderBy('order_date','ASC')->get();
+        }
+    
+    
+        foreach($statistic as $key => $val){
+            $chart_data[] = array(
+                'period' => $val->order_date,       // khoảng t/g
+                'sales' => $val->sales,             // doanh số
+                'profit' => $val->profit,           //lợi nhuận
+                'quantity' => $val->quantity,
+                'order' => $val->total_order
+            );
+        }
+        echo $data = json_encode($chart_data);
+    }
+
+    public function days_order(){
+        $sub30days = Carbon::now('Asia/Ho_Chi_Minh')->subDays(30)->toDateString();
+
+        $now = Carbon::now('Asia/Ho_Chi_Minh')->toDateString();
+
+        $statistic = Statistical::whereBetween('order_date',[$sub30days,$now])->orderBy('order_date','ASC')->get();
+
+
+        foreach($statistic as $key => $val){
+            $chart_data[] = array(
+                'period' => $val->order_date,       // khoảng t/g
+                'sales' => $val->sales,             // doanh số
+                'profit' => $val->profit,           //lợi nhuận
+                'quantity' => $val->quantity,
+                'order' => $val->total_order
+            );
+        }
+        echo $data = json_encode($chart_data);
+    }
+
+    // public function order_date(Request $request){
+    //     $order_date = $_GET['date'];
+    //     $order = Order::where('order_date',$order_date)->orderby('created_at','DESC')->get();
+    //     return view('admin.order_date')->with(compact('order'));
+    // }
+// KT Thống kê
 
     public function login_admin(Request $request){
         $this->validation($request);
@@ -188,7 +266,10 @@ class AdminController extends Controller
     }
         
     public function change_pass(){
-        return view('admin.account.change_pass');
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
+        return view('admin.account.change_pass')->with(compact('info'));
     }
 
     public function confirm_pass(Request $request){
@@ -289,7 +370,7 @@ class AdminController extends Controller
         // Seo  
         // $url_canonical = $request->url();
 
-        return view('admin.account.new_pass');  //->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical'));
+        return view('admin.account.new_pass');
     }
 
     public function up_pass_admin(Request $request){

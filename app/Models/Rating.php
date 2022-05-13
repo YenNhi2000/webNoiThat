@@ -14,7 +14,7 @@ class Rating extends Model
     protected $primaryKey = 'rating_id';	//khóa chính
     protected $table = 'tbl_rating';		//tên bảng
     
-    public function product(){
-        return $this->belongsTo('App\Models\Product','product_id');    // 1 rating chỉ thuộc 1 sp
+    public function order_details(){
+        return $this->belongsTo('App\Models\OrderDetails','ord_detail_id');    // 1 rating chỉ thuộc 1 sp
     }
 }

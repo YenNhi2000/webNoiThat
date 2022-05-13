@@ -33,7 +33,7 @@
                     
                 </form>
 
-                <div class="row">
+                <!-- <div class="row">
                     <p>Hoặc đăng nhập với</p>
                     <div class="col-sm-6 lg-fb">
                         <a href="{{url('/login-facebook')}}" class="social">
@@ -47,7 +47,7 @@
                             <span>Google</span>
                         </a>
                     </div>
-                </div>
+                </div> -->
             </div>
         </div>
     </div>

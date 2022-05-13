@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Ex_Type;
 use App\Imports\Im_Type;
+use App\Models\Admin;
 
 session_start();
 
@@ -30,23 +31,31 @@ class TypeProduct extends Controller
 
     public function all_type_product(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $all_type_product = Type::where('type_storage','0')->orderBy('type_id','desc')->get();
-        return view('admin.type.all_type')->with(compact('all_type_product'));
+        return view('admin.type.all_type')->with(compact('info', 'all_type_product'));
     }
 
-    public function import_cate(Request $request){
+    public function import_type(Request $request){
         $path = $request->file('file')->getRealPath();
         Excel::import(new Im_Type, $path);
         return back();
     }
 
-    public function export_cate(){
+    public function export_type(){
         return Excel::download(new Ex_Type,'type_product.xlsx');
     }
 
     public function add_type_product(){
         $this->AuthLogin();
-        return view('admin.type.add_type');
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
+        return view('admin.type.add_type')->with(compact('info'));
     }
 
     public function save_type_product(Request $request){
@@ -92,8 +101,12 @@ class TypeProduct extends Controller
 
     public function edit_type_product($type_pro_slug){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $edit_type_product = Type::where('type_slug', $type_pro_slug)->get();
-        return view('admin.type.edit_type')->with(compact('edit_type_product'));
+        return view('admin.type.edit_type')->with(compact('info','edit_type_product'));
     }
 
     public function update_type_product(Request $request, $type_id){
@@ -122,8 +135,11 @@ class TypeProduct extends Controller
     public function type_storage(){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $storage = Type::where('type_storage','1')->orderBy('type_id','desc')->get();
-        return view('admin.type.storage')->with(compact('storage'));
+        return view('admin.type.storage')->with(compact('info','storage'));
     }
 
     public function restore_type($type_id){

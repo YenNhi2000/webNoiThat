@@ -51,267 +51,269 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 </head>
 
 <body>
-	<div class="banner-top container-fluid" id="home">
-		<!-- header -->
-		<header>
-			<div class="row">
-				<div class="col-md-3 top-info text-left mt-lg-4">
-					<h6> Liên hệ </h6>
-					<ul>
-						<li>
-							<i class="fa fa-phone"></i> </li>
-						<li class="number-phone mt-3">0123456789</li>
-					</ul>
-				</div>
-				<div class="col-md-6 logo-w3layouts text-center">
-					<h1 class="logo-w3layouts">
-						<a class="navbar-brand" href="{{URL::to('/')}}"> N&T </a>
-					</h1>
-				</div>
+	<div class="body-web">
+		<div class="banner-top container-fluid" id="home">
+			<!-- header -->
+			<header>
+				<div class="row">
+					<div class="col-md-3 top-info text-left mt-lg-4">
+						<h6> Liên hệ </h6>
+						<ul>
+							<li>
+								<i class="fa fa-phone"></i> </li>
+							<li class="number-phone mt-3">0123456789</li>
+						</ul>
+					</div>
+					<div class="col-md-6 logo-w3layouts text-center">
+						<h1 class="logo-w3layouts">
+							<a class="navbar-brand" href="{{URL::to('/')}}"> N&T </a>
+						</h1>
+					</div>
 
-				<div class="col-md-3 top-info-cart text-right mt-lg-4">
-					<ul class="cart-inner-info">
-						<li class="button-log">
-							<?php
+					<div class="col-md-3 top-info-cart text-right mt-lg-4">
+						<ul class="cart-inner-info">
+							<li class="button-log">
+								<?php
 
-								use Illuminate\Support\Facades\Session;
+									use Illuminate\Support\Facades\Session;
 
-								$name = Session::get('customer_name');
-								if ($name){
-							?>
+									$name = Session::get('customer_name');
+									if ($name){
+								?>
 
-								<a class="btn-open" href="#">
-									<span class="fa fa-user" aria-hidden="true"></span>
-								</a>
+									<a class="btn-open" href="#">
+										<span class="fa fa-user" aria-hidden="true"></span>
+									</a>
 
-								<div class="overlay-login text-left">
-									<button type="button" class="overlay-close1">
-										<i class="fa fa-times" aria-hidden="true"></i>
-									</button>
-									<div class="wrap">
-										<h5 class="text-center mb-4">Thông tin cá nhân</h5>
-										<div class="info_login p-5 bg-dark mx-auto mw-100">
-											<div class="form-group">
-												<label class="mb-2">Họ và tên: 
-													<span>
-														<?php
-															echo $name;
-														?>
-													</span>
-												</label>
+									<div class="overlay-login text-left">
+										<button type="button" class="overlay-close1">
+											<i class="fa fa-times" aria-hidden="true"></i>
+										</button>
+										<div class="wrap">
+											<h5 class="text-center mb-4">Thông tin cá nhân</h5>
+											<div class="info_login p-5 bg-dark mx-auto mw-100">
+												<div class="form-group">
+													<label class="mb-2">Họ và tên: 
+														<span>
+															<?php
+																echo $name;
+															?>
+														</span>
+													</label>
+												</div>
+												<div class="form-group">
+													<label class="mb-2">Số điện thoại: {{$result->customer_phone}}<span></span></label>
+												</div>
+												<div class="form-group">
+													<label class="mb-2">Email: {{$result->customer_email}}<span></span></label>
+												</div>
 											</div>
-											<div class="form-group">
-												<label class="mb-2">Số điện thoại: {{$result->customer_phone}}<span></span></label>
-											</div>
-											<div class="form-group">
-												<label class="mb-2">Email: {{$result->customer_email}}<span></span></label>
-											</div>
+
+											<ul class="list-login">
+												<li> <a href="{{url('/lich-su-don-hang')}}"> Lịch sử đơn hàng </a> </li>
+												<li> <a href="{{URL::to('/doi-mat-khau')}}"> Đổi mật khẩu </a> </li>
+												<li> <a href="{{URL::to('/dang-xuat')}}"> Đăng xuất </a> </li>
+											</ul>
 										</div>
-
-										<ul class="list-login">
-											<li> <a href="{{url('/lich-su-don-hang')}}"> Lịch sử đơn hàng </a> </li>
-											<li> <a href="{{URL::to('/doi-mat-khau')}}"> Đổi mật khẩu </a> </li>
-											<li> <a href="{{URL::to('/dang-xuat')}}"> Đăng xuất </a> </li>
-										</ul>
 									</div>
-								</div>
-							<?php
-								}else{
-							?>
-								<a class="btn-open" href="{{url('/dang-nhap')}}">
-									<span class="fa fa-user" aria-hidden="true"></span>
-								</a>
-							<?php
-								}
-							?>
+								<?php
+									}else{
+								?>
+									<a class="btn-open" href="{{url('/dang-nhap')}}" title="Đăng nhập">
+										<span class="fa fa-user" aria-hidden="true"></span>
+									</a>
+								<?php
+									}
+								?>
 
-						</li>
-						<li class="galssescart galssescart2 cart cart box_1">
-							<a href="{{URL::to('/gio-hang')}}" class="top_googles_cart">
-								Giỏ hàng
-								<i class="fa fa-cart-arrow-down"></i>
-							</a>
-						</li>
-					</ul>
-				</div>
-			</div>
-			<div class="search">
-				<div class="mobile-nav-button">
-					<button id="trigger-overlay" type="button">
-						<i class="fa fa-search"></i>
-					</button>
-				</div>
-				<!-- open/close -->
-				<div class="overlay overlay-door">
-					<button type="button" class="overlay-close">
-						<i class="fa fa-times" aria-hidden="true"></i>
-					</button>
-					<form action="{{URL::to('/tim-kiem')}}" autocomplete="off" method="post" class="d-flex">
-
-						{{ csrf_field() }}
-
-						<input class="form-control" type="search" name="keywords" id="keywords" placeholder="Tìm kiếm..." required="">
-						
-						<div id="search_ajax"></div>
-
-						<button type="submit" class="btn btn-primary submit">
-							<i class="fa fa-search"></i>
-						</button>
-					</form>
-				</div>
-				<!-- open/close -->
-			</div>
-			<label class="top-log mx-auto"></label>
-			<nav class="navbar navbar-expand-lg navbar-light bg-light top-header mb-2">
-
-				<button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
-				    aria-expanded="false" aria-label="Toggle navigation">
-					<span class="navbar-toggler-icon">
-						
-					</span>
-				</button>
-				<div class="collapse navbar-collapse" id="navbarSupportedContent">
-					<ul class="navbar-nav nav-mega mx-auto">
-						<li class="nav-item active">
-							<a class="nav-link ml-lg-0" href="{{URL::to('/')}}">Trang chủ
-								<span class="sr-only">(current)</span>
-							</a>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="#">Giới thiệu</a>
-						</li>
-						<li class="nav-item dropdown">
-							<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">	<!-- class="dropdown-toggle" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" -->
-								Sản phẩm
-							</a> 
-							<ul class="dropdown-menu mega-menu ">
-								<li>
-									<div class="row">
-										@foreach($cat_pro as $key => $cat)
-										<div class="col-md-4 media-list span4 text-left cate">
-											<a href="{{URL::to('/danh-muc-san-pham/'.$cat->category_slug)}}">{{$cat->category_name}} </a>
-										</div>
-										@endforeach
-									</div>
-								</li>
-							</ul>
-						</li>
-						<li class="nav-item">
-							<a class="nav-link" href="contact.html">Liên hệ</a>
-						</li>
-					</ul>
-				</div>
-			</nav>
-		</header>
-		<!-- //header -->
-	</div>
-
-				@yield('content')
-
-	<!-- about -->
-	<!--footer -->
-	<footer class="py-lg-5 py-3">
-		<div class="container-fluid px-lg-5 px-3">
-			<div class="row footer-top-w3layouts">
-				<div class="col-lg-3 footer-grid-w3ls">
-					<div class="footer-title">
-						<h3>Thông tin liên hệ</h3>
-					</div>
-					<div class="contact-info">
-						<h4>Địa chỉ :</h4>
-						<p>Tân Hiệp, Phú Giáo, Bình Dương</p>
-						<div class="phone">
-							<h4>Liên hệ :</h4>
-							<p>Điện thoại : (+84) 333 599 035</p>
-							<p>Email :
-								<a href="mailto:info@example.com">yennhi310703@gmail.com</a>
-							</p>
-						</div>
-					</div>
-				</div>
-				<div class="col-lg-3 footer-grid-w3ls">
-					<div class="footer-title">
-						<h3>Giờ mở cửa</h3>
-					</div>
-					<div class="footer-text">
-						<p>Thứ 2 - thứ 7: 8:30 - 20:00</p>
-						<p>Chủ nhật: 8:30 - 19:00</p>
-						<ul class="footer-social text-left mt-lg-4 mt-3">
-
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-facebook-f"></span>
-								</a>
 							</li>
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-twitter"></span>
-								</a>
-							</li>
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-google-plus-g"></span>
-								</a>
-							</li>
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-linkedin-in"></span>
-								</a>
-							</li>
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-rss"></span>
-								</a>
-							</li>
-							<li class="mx-2">
-								<a href="#">
-									<span class="fa fa-vk"></span>
+							<li class="galssescart galssescart2 cart cart box_1">
+								<a href="{{URL::to('/gio-hang')}}" class="top_googles_cart">
+									Giỏ hàng
+									<i class="fa fa-cart-arrow-down"></i>
 								</a>
 							</li>
 						</ul>
 					</div>
 				</div>
-				<div class="col-lg-3 footer-grid-w3ls">
-					<div class="footer-title">
-						<h3>Links</h3>
+				<div class="search">
+					<div class="mobile-nav-button">
+						<button id="trigger-overlay" type="button" title="Tìm kiếm">
+							<i class="fa fa-search"></i>
+						</button>
 					</div>
-					<ul class="links">
-						<li>
-							<a href="{{url('/')}}">Trang chủ</a>
-						</li>
-						<li>
-							<a href="#">Giới thiệu</a>
-						</li>
-						<!-- <li>
-							<a href="404.html">Error</a>
-						</li> -->
-						<li>
-							<a href="#">Sản phẩm</a>
-						</li>
-						<li>
-							<a href="#">Liên hệ</a>
-						</li>
-					</ul>
-				</div>
-				<div class="col-lg-3 footer-grid-w3ls">
-					<div class="footer-title">
-						<h3>Đăng ký nhận ưu đãi</h3>
-					</div>
-					<div class="footer-text">
-						<p>Đăng ký để nhận được tin tức và cập nhật mới nhất từ chúng tôi.</p>
-						<form action="#" method="post">
-							<input class="form-control" type="email" name="Email" placeholder="Nhập email..." required="">
-							<button class="btn1">
-								<i class="fa fa-envelope" aria-hidden="true"></i>
+					<!-- open/close -->
+					<div class="overlay overlay-door">
+						<button type="button" class="overlay-close">
+							<i class="fa fa-times" aria-hidden="true"></i>
+						</button>
+						<form action="{{URL::to('/tim-kiem')}}" autocomplete="off" method="post" class="d-flex">
+
+							{{ csrf_field() }}
+
+							<input class="form-control" type="search" name="keywords" id="keywords" placeholder="Tìm kiếm..." required="">
+							
+							<div id="search_ajax"></div>
+
+							<button type="submit" class="btn btn-primary submit">
+								<i class="fa fa-search"></i>
 							</button>
-							<div class="clearfix"> </div>
 						</form>
+					</div>
+					<!-- open/close -->
+				</div>
+				<label class="top-log mx-auto"></label>
+				<nav class="navbar navbar-expand-lg navbar-light bg-light top-header mb-2">
+
+					<button class="navbar-toggler mx-auto" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
+						aria-expanded="false" aria-label="Toggle navigation">
+						<span class="navbar-toggler-icon">
+							
+						</span>
+					</button>
+					<div class="collapse navbar-collapse" id="navbarSupportedContent">
+						<ul class="navbar-nav nav-mega mx-auto">
+							<li class="nav-item active">
+								<a class="nav-link ml-lg-0" href="{{URL::to('/')}}">Trang chủ
+									<span class="sr-only">(current)</span>
+								</a>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="#">Giới thiệu</a>
+							</li>
+							<li class="nav-item dropdown">
+								<a class="nav-link dropdown-toggle" href="#" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">	<!-- class="dropdown-toggle" id="navbarDropdown1" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" -->
+									Sản phẩm
+								</a> 
+								<ul class="dropdown-menu mega-menu ">
+									<li>
+										<div class="row">
+											@foreach($cat_pro as $key => $cat)
+											<div class="col-md-4 media-list span4 text-left cate">
+												<a href="{{URL::to('/danh-muc-san-pham/'.$cat->category_slug)}}">{{$cat->category_name}} </a>
+											</div>
+											@endforeach
+										</div>
+									</li>
+								</ul>
+							</li>
+							<li class="nav-item">
+								<a class="nav-link" href="contact.html">Liên hệ</a>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+			<!-- //header -->
+		</div>
+
+					@yield('content')
+
+		<!-- about -->
+		<!--footer -->
+		<footer class="py-lg-5 py-3">
+			<div class="container-fluid px-lg-5 px-3">
+				<div class="row footer-top-w3layouts">
+					<div class="col-lg-3 footer-grid-w3ls">
+						<div class="footer-title">
+							<h3>Thông tin liên hệ</h3>
+						</div>
+						<div class="contact-info">
+							<h4>Địa chỉ :</h4>
+							<p>Tân Hiệp, Phú Giáo, Bình Dương</p>
+							<div class="phone">
+								<h4>Liên hệ :</h4>
+								<p>Điện thoại : (+84) 333 599 035</p>
+								<p>Email :
+									<a href="mailto:info@example.com">yennhi310703@gmail.com</a>
+								</p>
+							</div>
+						</div>
+					</div>
+					<div class="col-lg-3 footer-grid-w3ls">
+						<div class="footer-title">
+							<h3>Giờ mở cửa</h3>
+						</div>
+						<div class="footer-text">
+							<p>Thứ 2 - thứ 7: 8:30 - 20:00</p>
+							<p>Chủ nhật: 8:30 - 19:00</p>
+							<ul class="footer-social text-left mt-lg-4 mt-3">
+
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-facebook-f"></span>
+									</a>
+								</li>
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-twitter"></span>
+									</a>
+								</li>
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-google-plus-g"></span>
+									</a>
+								</li>
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-linkedin-in"></span>
+									</a>
+								</li>
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-rss"></span>
+									</a>
+								</li>
+								<li class="mx-2">
+									<a href="#">
+										<span class="fa fa-vk"></span>
+									</a>
+								</li>
+							</ul>
+						</div>
+					</div>
+					<div class="col-lg-3 footer-grid-w3ls">
+						<div class="footer-title">
+							<h3>Links</h3>
+						</div>
+						<ul class="links">
+							<li>
+								<a href="{{url('/')}}">Trang chủ</a>
+							</li>
+							<li>
+								<a href="#">Giới thiệu</a>
+							</li>
+							<!-- <li>
+								<a href="404.html">Error</a>
+							</li> -->
+							<li>
+								<a href="#">Sản phẩm</a>
+							</li>
+							<li>
+								<a href="#">Liên hệ</a>
+							</li>
+						</ul>
+					</div>
+					<div class="col-lg-3 footer-grid-w3ls">
+						<div class="footer-title">
+							<h3>Đăng ký nhận ưu đãi</h3>
+						</div>
+						<div class="footer-text">
+							<p>Đăng ký để nhận được tin tức và cập nhật mới nhất từ chúng tôi.</p>
+							<form action="#" method="post">
+								<input class="form-control" type="email" name="Email" placeholder="Nhập email..." required="">
+								<button class="btn1">
+									<i class="fa fa-envelope" aria-hidden="true"></i>
+								</button>
+								<div class="clearfix"> </div>
+							</form>
+						</div>
 					</div>
 				</div>
 			</div>
-		</div>
-	</footer>
-	<!-- //footer -->
+		</footer>
+		<!-- //footer -->
+	</div>
 
 <!--jQuery-->
 <script src="{{asset('public/frontend/js/jquery-2.2.3.min.js')}}"></script>
@@ -909,14 +911,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 			function load_comment(){
 				var product_id = $('.comment_product_id').val();
 				var _token = $('input[name="_token"]').val();
+
 				$.ajax({
-				url:"{{url('/load-comment')}}",
-				method:"POST",
-				data:{product_id:product_id, _token:_token},
-				success:function(data){
-				
-					$('#comment').html(data);
-				}
+					url:"{{url('/load-comment')}}",
+					method:"POST",
+					data:{product_id:product_id, _token:_token},
+					success:function(data){
+						$('#comment').html(data);
+					}
 				});
 			}
 
@@ -924,17 +926,21 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 				var product_id = $('.comment_product_id').val();
 				var comment_name = $('.comment_name').val();
 				var comment_content = $('.comment_content').val();
+				var ord_detail_id = $('.ord_detail_id').val();
 				var _token = $('input[name="_token"]').val();
+				
 				$.ajax({
 					url:"{{url('/send-comment')}}",
 					method:"POST",
-					data:{product_id:product_id,comment_name:comment_name,comment_content:comment_content, _token:_token},
+					data:{product_id:product_id,comment_name:comment_name,comment_content:comment_content,
+						ord_detail_id:ord_detail_id, _token:_token},
 					success:function(data){
-						$('#notify_comment').html('<span class="text text-success">Thêm bình luận thành công, bình luận đang chờ duyệt</span>');
-						load_comment();
-						$('#notify_comment').fadeOut(3000);
+						// $('#notify_comment').html('<span class="text text-success">Thêm bình luận thành công, bình luận đang chờ duyệt</span>');
+						// load_comment();
+						// $('#notify_comment').fadeOut(3000);
 						$('.comment_name').val('');
 						$('.comment_content').val('');
+						location.reload(); 
 					}
 				});
 			});
@@ -977,12 +983,14 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
 		$(document).on('click', '.rating', function(){
 			var index = $(this).data("index");
 			var product_id = $(this).data('product_id');
-			var _token = $('input[name="_token"]').val();
+			var ord_detail_id = $('.ord_detail_id').val();
 
+			var _token = $('input[name="_token"]').val();
+			
 			$.ajax({
 				url:"{{url('/insert-rating')}}",
 				method:"POST",
-				data:{index:index, product_id:product_id,_token:_token},
+				data:{index:index, product_id:product_id,ord_detail_id:ord_detail_id,_token:_token},
 				success:function(data)
 				{
 					if(data == 'done')
@@ -1014,6 +1022,49 @@ Smartphone Compatible web template, free webdesigns for Nokia, Samsung, LG, Sony
         }
     </script>
 <!-- //Hủy đơn hàng -->
+
+<!-- Xem đánh giá -->
+	<script type="text/javascript">
+		$(document).ready(function(){
+			// $('.view_rating').click(function(){
+			// 	var product_id = $('.pro_id').val();
+			// 	var ord_detail_id = $('.ord_detail_id').val();
+			// 	var _token = $('input[name="_token"]').val();
+				
+			// 	// $.ajax({
+			// 	// 	url:"{{url('/send-comment')}}",
+			// 	// 	method:"POST",
+			// 	// 	data:{product_id:product_id,comment_name:comment_name,comment_content:comment_content, _token:_token},
+			// 	// 	success:function(data){
+			// 	// 		$('.comment_name').val('');
+			// 	// 		$('.comment_content').val('');
+			// 	// 		location.reload(); 
+			// 	// 	}
+			// 	// });
+			// 	alert(product_id);
+			// 	alert(ord_detail_id);
+			// });
+			load_cmt_rating();
+
+			function load_cmt_rating(){
+				var ord_det_id = $('.cmt_detail_id').val();
+				var product_id = $('.cmt_product_id').val();
+				var _token = $('input[name="_token"]').val();
+
+				$.ajax({
+					url:"{{url('/load-cmt-rating')}}",
+					method:"POST",
+					data:{ord_det_id:ord_det_id,product_id:product_id, _token:_token},
+					success:function(data){
+						$('#cmt_rating').html(data);
+					}
+				});
+				// alert(ord_det_id);
+				// alert(product_id);
+			}
+		});
+	</script>
+<!-- //Xem đánh giá -->
 
 <!-- Validator -->
 	<script src="{{asset('public/frontend/js/jquery.form-validator.min.js')}}"></script>

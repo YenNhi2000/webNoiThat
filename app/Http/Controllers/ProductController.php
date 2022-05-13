@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Exports\Ex_Pro;
 use App\Imports\Im_Pro;
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -37,6 +38,9 @@ class ProductController extends Controller
     public function all_product(){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $all_product = DB::table('tbl_product') 
             ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
             ->join('tbl_brand','tbl_brand.brand_id', '=', 'tbl_product.brand_id')            
@@ -45,7 +49,7 @@ class ProductController extends Controller
             ->where('product_storage','0')->paginate(6);
 
         // $manager_product = view('admin.product.all_product')->with(compact('all_product'));
-        return view('admin.product.all_product')->with(compact('all_product'));
+        return view('admin.product.all_product')->with(compact('info','all_product'));
     }
 
     public function import_pro(Request $request){
@@ -60,16 +64,23 @@ class ProductController extends Controller
 
     public function add_product(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $cat_product = Category::orderBy('category_id','asc')->get();
         $brand_product = Brand::orderBy('brand_id','asc')->get();
         $type_product = Type::orderBy('type_id','asc')->get();
 
         return view('admin.product.add_product')
-            ->with(compact('cat_product', 'brand_product', 'type_product'));
+            ->with(compact('info', 'cat_product', 'brand_product', 'type_product'));
     }
 
     public function view_product($pro_slug){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
 
         $detail = DB::table('tbl_product') 
             ->join('tbl_category','tbl_category.category_id', '=', 'tbl_product.cat_id')
@@ -77,7 +88,7 @@ class ProductController extends Controller
             ->join('tbl_type','tbl_type.type_id', '=', 'tbl_product.type_id')
             ->where('tbl_product.product_slug', $pro_slug)->first();
 
-        return view('admin.product.view_product')->with(compact('detail'));
+        return view('admin.product.view_product')->with(compact('info', 'detail'));
     }
 
     public function save_product(Request $request){
@@ -156,6 +167,7 @@ class ProductController extends Controller
 
     public function edit_product($pro_slug){
         $this->AuthLogin();
+
         $cat_product = Category::orderBy('category_id','desc')->get();
         $brand_product = Brand::orderBy('brand_id','desc')->get();
         $type_product = Type::orderBy('type_id','desc')->get();
@@ -163,6 +175,7 @@ class ProductController extends Controller
         $edit_product = Product::where('product_slug', $pro_slug)->get();
         // $manager_product = view('admin.product.edit_product')
         //     ->with(compact('cat_product','brand_product','type_product','edit_product'));
+
         return view('admin.product.edit_product')
             ->with(compact('cat_product','brand_product','type_product','edit_product'));
     }
@@ -222,11 +235,16 @@ class ProductController extends Controller
     }
 
 
-    
+    // Comment
     public function all_comment(){
+        $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $comment = Comment::with('product')->where('comment_parent_comment','=',0)->orderBy('comment_id','DESC')->get();
         $comment_rep = Comment::with('product')->where('comment_parent_comment','>',0)->get();
-        return view('admin.comment.all_comment')->with(compact('comment', 'comment_rep'));
+        return view('admin.comment.all_comment')->with(compact('info', 'comment', 'comment_rep'));
     }
 
     public function active_comment($cmt_id){
@@ -251,6 +269,7 @@ class ProductController extends Controller
         $comment->comment_parent_comment = $data['cmt_id'];
         $comment->comment_status = 0;
         $comment->comment_name = 'N&T Store';
+        $comment->ord_detail_id = $data['ord_detail_id'];
         $comment->save();
 
         Toastr::success('Đã trả lời bình luận','');
@@ -306,17 +325,8 @@ class ProductController extends Controller
 
         $gallery = Gallery::where('product_id', $product_id)->get();
 
-        $rating = Rating::where('product_id', $product_id)->avg('rating');  //lấy trung bình số sao
+        $rating = OrderDetails::where('product_id', $product_id)->avg('rating');  //lấy trung bình số sao
         $rating = round($rating);   //làm tròn
-
-        // Đánh giá
-        $cus_rating = Rating::where('customer_id', Session::get('customer_id'))
-            ->where('product_id', $product_id)->orderBy('rating','desc')->first();
-
-        
-        // Bình luận
-        $order_product = OrderDetails::with('product')->where('product_id', $product_id)->first();
-        $cus_name = Customer::where('customer_id', Session::get('customer_id'))->first();
 
         // Sản phẩm nổi bật theo số sao đánh giá
         $related_pro = DB::table('tbl_product')
@@ -328,7 +338,7 @@ class ProductController extends Controller
 
         return view('pages.product.show_details')
             ->with(compact('cat_pro','brand_pro','type_pro', 'url_canonical', 'result', 'pro_name', 'details_pro', 
-            'gallery', 'rating', 'cus_rating', 'order_product', 'cus_name', 'related_pro'));
+            'gallery', 'rating', 'related_pro'));
     }
 
     public function load_comment(Request $request){
@@ -342,7 +352,7 @@ class ProductController extends Controller
             $output.= ' 
                 <div class="row style_comment">
                     <div class="col-md-2">
-                        <img width="100%" src="'.url('/public/backend/images/2.jpg').'" class="img img-responsive img-thumbnail">
+                        <img width="100%" src="'.url('/public/frontend/images/user.jpg').'" class="img img-responsive img-thumbnail">
                     </div>
                     <div class="col-md-10">
                         <p>
@@ -360,7 +370,7 @@ class ProductController extends Controller
                         <div class="row style_comment" style="margin:5px 0px 5px 80px; background: #f2f2f2;">
 
                             <div class="col-md-2">
-                                <img width="80%" src="'.url('/public/frontend/images/businessman.jpg').'" class="img img-responsive img-thumbnail">
+                                <img width="80%" src="'.url('/public/backend/images/admin.jpg').'" class="img img-responsive img-thumbnail">
                             </div>
                             <div class="col-md-10">
                                 <p>
@@ -381,25 +391,31 @@ class ProductController extends Controller
         $pro_id = $request->product_id;
         $cmt_name = $request->comment_name;
         $cmt_content = $request->comment_content;
+        $det_id = $request->ord_detail_id;
 
         $cmt = new Comment();
         $cmt->comment_name = $cmt_name;
         $cmt->comment = $cmt_content;
         $cmt->comment_pro_id = $pro_id;
-        $cmt->comment_status = 1;
+        $cmt->comment_status = 0;
         $cmt->comment_parent_comment = 0;
+        $cmt->ord_detail_id = $det_id;
         $cmt->save();
     }
     
     public function insert_rating(Request $request){
         $data = $request->all();
-        $rating = new Rating();
-        $rating->product_id = $data['product_id'];
-        $rating->rating = $data['index'];
-        $rating->customer_id = Session::get('customer_id');
-        // $rating->ord_detail_id = $data['orderCode'];
-        $rating->save();
+        // $rating = new Rating();
+        // $rating->product_id = $data['product_id'];
+        // $rating->rating = $data['index'];
+        // $rating->customer_id = Session::get('customer_id');
+        // $rating->ord_detail_id = $data['ord_detail_id'];
+        // $rating->save();
 
+        $rating = OrderDetails::where('details_id',$data['ord_detail_id'])->first();
+        $rating->rating = $data['index'];
+        $rating->save();
+        
         $product = Product::find($data['product_id']);
         $product->product_total_star = $product->product_total_star + $rating->rating;
         $product->product_total_review = $product->product_total_review + 1;

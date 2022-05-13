@@ -61,7 +61,7 @@
                                 Xem chi tiết
                             </a>
                             
-                            @if($ord->order_status!=3)
+                            @if($ord->order_status == 1)
 
                             <!-- Trigger the modal with a button -->
                             <button type="button" class="btn btn-danger destroy" data-toggle="modal" data-target="#huydon">Hủy đơn hàng</button>

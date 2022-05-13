@@ -15,6 +15,7 @@ use Illuminate\Support\Facades\Redirect;
 use Maatwebsite\Excel\Facades\Excel;
 use App\Exports\Ex_Brand;
 use App\Imports\Im_Brand;
+use App\Models\Admin;
 use App\Models\Customer;
 
 session_start();
@@ -32,6 +33,9 @@ class BrandProduct extends Controller
 
     public function all_brand_product(){
         $this->AuthLogin();
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+        
         // $all_brand_product = DB::table('tbl_brand')->get();
 
         $all_brand_product = Brand::where('brand_storage','0')->orderBy('brand_id','desc')->get();
@@ -39,21 +43,22 @@ class BrandProduct extends Controller
         // $all_brand_product = Brand::orderBy('brand_id','desc')->take(1)->get(); //dùng take để show số lượng sp mong muốn
         // $all_brand_product = Brand::orderBy('brand_id','desc')->paginate(2);    //phân trang
 
-        return view('admin.brand.all_brand')->with(compact('all_brand_product'));
+        return view('admin.brand.all_brand')->with(compact('info', 'all_brand_product'));
     }
 
-    public function import_cate(Request $request){
+    public function import_brand(Request $request){
         $path = $request->file('file')->getRealPath();
         Excel::import(new Im_Brand, $path);
         return back();
     }
 
-    public function export_cate(){
+    public function export_brand(){
         return Excel::download(new Ex_Brand,'brand_product.xlsx');
     }
 
     public function add_brand_product(){
         $this->AuthLogin();
+
         return view('admin.brand.add_brand');
     }
 
@@ -105,6 +110,7 @@ class BrandProduct extends Controller
 
     public function edit_brand_product($brand_pro_slug){
         $this->AuthLogin();
+
         // $edit_brand_product = DB::table('tbl_brand')->where('brand_slug', $brand_pro_slug)->get();
 
         $edit_brand_product = Brand::where('brand_slug', $brand_pro_slug)->get();

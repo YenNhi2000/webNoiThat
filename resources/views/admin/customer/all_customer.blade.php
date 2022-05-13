@@ -7,7 +7,7 @@
 
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs">
-                <a href="{{url('/customer-storage')}}" class="storage">Lưu trữ</a>
+                <a href="{{url('/customer-storage')}}" class="storage">Thùng rác</a>
             </div>
             <div class="col-sm-4"></div>
             <div class="col-sm-3">

@@ -62,7 +62,7 @@
                     </div>
                 </div> -->
                 <a href="{{url('/add-brand-product')}}" class="add">Thêm mới</a>
-                <a href="{{url('/brand-storage')}}" class="storage">Lưu trữ</a>
+                <a href="{{url('/brand-storage')}}" class="storage">Thùng rác</a>
             </div>
             <div class="col-sm-4"></div>
             <!-- <div class="col-sm-3">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
@@ -29,8 +30,11 @@ class GalleryController extends Controller
     public function add_gallery($product_id){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $pro_id = $product_id;
-        return view('admin.gallery.add_gallery')->with(compact('pro_id'));
+        return view('admin.gallery.add_gallery')->with(compact('info', 'pro_id'));
     }
     
     public function select_gallery(Request $request){

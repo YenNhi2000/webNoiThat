@@ -7,7 +7,7 @@
         <div class="row w3-res-tb">
             <div class="col-sm-5 m-b-xs">
                 <a href="{{url('/add-category-product')}}" class="add">Thêm mới</a>
-                <a href="{{url('/category-storage')}}" class="storage">Lưu trữ</a>
+                <a href="{{url('/category-storage')}}" class="storage">Thùng rác</a>
             </div>
             <div class="col-sm-7"></div>
         </div>

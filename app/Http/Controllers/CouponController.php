@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use Illuminate\Http\Request;
 
 // use Illuminate\Support\Facades\DB;
@@ -28,27 +29,17 @@ class CouponController extends Controller
     public function all_coupon(){
         $this->AuthLogin();
 
-        $today = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
+        $today = Carbon::now('Asia/Ho_Chi_Minh')->format('Y-m-d');
         
         $all_coupon = Coupon::where('coupon_storage', '0')->orderby('coupon_id','desc')->paginate(5);
-        return view('admin.coupon.all_coupon')->with(compact('all_coupon', 'today'));
+        return view('admin.coupon.all_coupon')->with(compact('info','all_coupon', 'today'));
     }
 
     public function save_coupon(Request $request){
         $this->AuthLogin();
-
-        // $this->validate($request, [
-        //     'name' => 'required|unique:tbl_coupon,coupon_name|max:255',
-        //     'code' => 'required|max:255',
-        //     'quantity' => 'required|numeric',
-        //     'number' => 'required|numeric',
-        // ],
-        // [
-        //     'name.required' => 'Bạn chưa nhập tên mã giảm giá',
-        //     'cat_name.unique' => 'Tên danh mục đã có. Vui lòng điền tên khác',
-        //     'cat_slug.required' => 'Bạn chưa nhập slug của sản phẩm',
-        //     'cat_desc.required' => 'Bạn chưa nhập mô tả sản phẩm',
-        // ]);
 
         $data = $request->all();
         $coupon = new Coupon();
@@ -76,10 +67,14 @@ class CouponController extends Controller
 
     public function coupon_storage(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $today = Carbon::now('Asia/Ho_Chi_Minh')->format('d/m/Y');
 
         $storage = Coupon::where('coupon_storage','1')->orderBy('coupon_id','desc')->get();
-        return view('admin.coupon.storage')->with(compact('storage', 'today'));
+        return view('admin.coupon.storage')->with(compact('info', 'storage', 'today'));
     }
 
     public function restore_coupon($coupon_id){

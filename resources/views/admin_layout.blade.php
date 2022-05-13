@@ -14,18 +14,18 @@
     <script type="application/x-javascript"> addEventListener("load", function() { setTimeout(hideURLbar, 0); }, false); function hideURLbar(){ window.scrollTo(0,1); } </script>
 
     <!-- Bootstrap Core CSS -->
-    <link href="{{asset('public/backend/css/bootstrap.css')}}" rel='stylesheet' type='text/css' />
+        <link href="{{asset('public/backend/css/bootstrap.css')}}" rel='stylesheet' type='text/css' />
     <!-- <link href="{{asset('public/backend/css/bootstrap.min.css')}}" rel='stylesheet' type='text/css' /> -->
 
     <!-- Custom CSS -->
     <link href="{{asset('public/backend/css/style.css')}}" rel='stylesheet' type='text/css' />
 
     <!-- font-awesome icons CSS -->
-    <link href="{{asset('public/backend/css/font-awesome.css')}}" rel="stylesheet"> 
+        <link href="{{asset('public/backend/css/font-awesome.css')}}" rel="stylesheet"> 
     <!-- //font-awesome icons CSS-->
 
     <!-- side nav css file -->
-    <link href="{{asset('public/backend/css/SidebarNav.min.css')}}" media='all' rel='stylesheet' type='text/css'/>
+        <link href="{{asset('public/backend/css/SidebarNav.min.css')}}" media='all' rel='stylesheet' type='text/css'/>
     <!-- //side nav css file -->
     
     <!-- js-->
@@ -33,30 +33,34 @@
     <script src="{{asset('public/backend/js/modernizr.custom.js')}}"></script>
 
     <!--webfonts-->
-    <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
+        <link href="//fonts.googleapis.com/css?family=PT+Sans:400,400i,700,700i&amp;subset=cyrillic,cyrillic-ext,latin-ext" rel="stylesheet">
     <!--//webfonts--> 
 
     <!-- Toast -->
-    <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
-	
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
+        <!-- <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css">
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/js/toastr.min.js"></script> -->
 
-    <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
+        <link rel="stylesheet" href="http://cdn.bootcss.com/toastr.js/latest/css/toastr.min.css">
     <!-- //Toast -->
 
     <!-- Datepicker -->
-    <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
-    <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
+        <link rel="stylesheet" href="//code.jquery.com/ui/1.13.1/themes/base/jquery-ui.css">
+        <script src="https://code.jquery.com/ui/1.13.1/jquery-ui.js"></script>
     <!-- //Datepicker -->
 
     <!-- chart -->
-    <script src="{{asset('public/backend/js/Chart.js')}}"></script>
+        <!-- <script src="{{asset('public/backend/js/Chart.js')}}"></script> -->
+
+        <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.css">
+        <script src="//cdnjs.cloudflare.com/ajax/libs/morris.js/0.5.1/morris.min.js"></script>
+        <script src="//cdnjs.cloudflare.com/ajax/libs/raphael/2.1.0/raphael-min.js"></script>
     <!-- //chart -->
 
     <!-- Metis Menu -->
-    <script src="{{asset('public/backend/js/metisMenu.min.js')}}"></script>
-    <script src="{{asset('public/backend/js/custom.js')}}"></script>
-    <link href="{{asset('public/backend/css/custom.css')}}" rel="stylesheet">
+        <script src="{{asset('public/backend/js/metisMenu.min.js')}}"></script>
+        <script src="{{asset('public/backend/js/custom.js')}}"></script>
+        <link href="{{asset('public/backend/css/custom.css')}}" rel="stylesheet">
     <!--//Metis Menu -->
     <style>
         #chartdiv {
@@ -65,8 +69,8 @@
         }
     </style>
     <!--pie-chart --><!-- index page sales reviews visitors pie chart -->
-    <script src="{{asset('public/backend/js/pie-chart.js')}}" type="text/javascript"></script>
-    <script type="text/javascript">
+        <script src="{{asset('public/backend/js/pie-chart.js')}}" type="text/javascript"></script>
+        <script type="text/javascript">
 
             $(document).ready(function () {
                 $('#demo-pie-1').pieChart({
@@ -104,7 +108,7 @@
         </script>
     <!-- //pie-chart --><!-- index page sales reviews visitors pie chart -->
 
-        <!-- requried-jsfiles-for owl -->
+    <!-- requried-jsfiles-for owl -->
         <link href="{{asset('public/backend/css/owl.carousel.css')}}" rel="stylesheet">
         <script src="{{asset('public/backend/js/owl.carousel.js')}}"></script>
             <script>
@@ -118,8 +122,8 @@
                     });
                 });
             </script>
-        <!-- //requried-jsfiles-for owl -->
-    </head> 
+    <!-- //requried-jsfiles-for owl -->
+</head> 
 <body class="cbp-spmenu-push">
 	<div class="main-content">
         <div class="cbp-spmenu cbp-spmenu-vertical cbp-spmenu-left" id="cbp-spmenu-s1">
@@ -137,12 +141,12 @@
                                     <i class="fa fa-dashboard"></i> <span>Tổng quan</span>
                                 </a>
                             </li>
-                            <li class="treeview">
+                            <!-- <li class="treeview">
                                 <a href="{{URL::to('/all-staff')}}">
                                     <i class="fa fa-group"></i>
                                     <span>Nhân viên</span>
                                 </a>
-                            </li>
+                            </li> -->
                             <li class="treeview">
                                 <a href="{{URL::to('/all-category-product')}}">
                                     <i class="fa fa-book"></i>
@@ -299,44 +303,110 @@
 <script src="http://cdn.bootcss.com/toastr.js/latest/js/toastr.min.js"></script>
 {!! Toastr::message() !!}
 
-<!-- Datepicker -->
+<!-- Datepicker Coupon -->
     <script type="text/javascript">
         $(function(){
-            // Dashboard
-            $('#datepicker1').datepicker({
-                prevText: "Tháng trước",
-                nextText: "Tháng sau",
-                dateFormat: "dd/mm/yy",
-                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
-                duration: "slow"
-            });
-            $('#datepicker2').datepicker({
-                prevText: "Tháng trước",
-                nextText: "Tháng sau",
-                dateFormat: "dd/mm/yy",
-                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
-                duration: "slow"
-            });
-
-            // Coupon
             $('#start_cou').datepicker({
                 prevText: "Tháng trước",
                 nextText: "Tháng sau",
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy-mm-dd",
                 dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
                 duration: "slow"
             });
             $('#end_cou').datepicker({
                 prevText: "Tháng trước",
                 nextText: "Tháng sau",
-                dateFormat: "dd/mm/yy",
+                dateFormat: "yy-mm-dd",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+        });
+    </script>
+<!-- //Datepicker Coupon -->
+
+<!-- Datepicker Dashboard-->
+    <script type="text/javascript">
+        $(function(){
+            $('#datepicker1').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "yy-mm-dd",
+                dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
+                duration: "slow"
+            });
+            $('#datepicker2').datepicker({
+                prevText: "Tháng trước",
+                nextText: "Tháng sau",
+                dateFormat: "yy-mm-dd",
                 dayNamesMin: ["T.2", "T.3", "T.4", "T.5", "T.6", "T.7", "CN"],
                 duration: "slow"
             });
         });
 
-
         $(document).ready(function(){
+            chart30daysorder();
+
+            var chart = new Morris.Line({
+                element: 'chart',
+                //option chart
+                lineColors: ['#819C79', '#fc8710','#FF6541', '#A4ADD3', '#766B56'],
+                parseTime: false,
+                hideHover: 'auto',
+                xkey: 'period',
+                ykeys: ['order','sales','profit','quantity'],
+                labels: ['đơn hàng','doanh số','lợi nhuận','số lượng']           
+            });
+
+            // new Morris.Line({
+            //     element: 'chart',
+            //     //option chart
+            //     lineColors: ['#819C79', '#fc8710','#FF6541', '#A4ADD3', '#766B56'],
+
+            //     pointFillColors: ['#ffffff'],       //định dạng màu cho chấm trong biểu đồ
+            //     pointStrokeColors: ['black'],       //định dạng viền
+            //     fillOpacity: 0.6,                   //dành cho biểu đồ Area
+            //     hideHover:'auto',                   //hover chuột di chuyển trên biểu đồ
+            //     parseTime: false,                   //định dạng ngày giờ
+
+            //     xkey: 'period',                     //giá trị cột ngang
+            //     ykeys: ['order','sales','profit','quantity'],   //giá trị cột dọc
+            //     behaveLikeLine: true,
+            //     labels: ['đơn hàng','doanh số','lợi nhuận','số lượng']
+            // });
+
+            function chart30daysorder(){
+                var _token = $('input[name="_token"]').val();
+
+                $.ajax({
+                    url:"{{url('/days-order')}}",
+                    method:"POST",
+                    dataType:"JSON",
+                    data:{_token:_token},
+                    
+                    success:function(data)
+                    {
+                        chart.setData(data);
+                    }   
+                });
+            }
+
+            $('.dashboard-filter').change(function(){
+                var dashboard_value = $(this).val();
+                var _token = $('input[name="_token"]').val();
+                
+                $.ajax({
+                    url:"{{url('/dashboard-filter')}}",
+                    method:"POST",
+                    dataType:"JSON",
+                    data:{dashboard_value:dashboard_value,_token:_token},
+                    
+                    success:function(data)
+                    {
+                        chart.setData(data);
+                    }   
+                });
+            });
+
             $('#btn-filter').click(function(){
                 var from_date = $('#datepicker1').val();
                 var to_date = $('#datepicker2').val();
@@ -346,18 +416,33 @@
                     url:"{{url('/filter-by-date')}}",
                     method:"POST",
                     dataType:"JSON",
-                    data:{from_date:from_date,to_date:to_date,_token:_token},
-                    
-                    success:function(data)
-                        {
-                            // chart.setData(data);
-                        }   
+                    data:{from_date:from_date, to_date:to_date, _token:_token},
+                    success:function(data){
+                        chart.setData(data);
+                    }   
                 });
-
             });
         })
     </script>
-<!-- Datepicker -->
+
+    <script type="text/javascript">
+        $(document).ready(function(){
+            var donut = Morris.Donut({
+                element: 'donut',
+                resize: true,
+                colors: ['#fa8258', '#82fa58', '#faac58', '#9f81f7'],
+                //labelColor:"#cccccc", // text color
+                //backgroundColor: '#333333', // border color
+                data: [
+                    {label:"San pham", value:<?php echo $app_product ?>},
+                    {label:"Don hang", value:<?php echo $app_order ?>},
+                    {label:"Binh luan", value:<?php echo $app_comment ?>},
+                    {label:"Khach hang", value:<?php echo $app_customer ?>} 
+                ]
+            });
+        });
+    </script>
+<!-- //Datapicker Dashboard -->
 
 <!-- Slug -->
     <script type="text/javascript">

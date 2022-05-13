@@ -62,11 +62,52 @@
                                     <img src="{{URL::to('public/uploads/products/'.$pro->product_image)}}" class="img-fluid" alt="">
                                     <div class="men-cart-pro">
                                         <div class="inner-men-cart-pro">
-                                            <a href="{{URL::to('/chi-tiet-san-pham/'.$pro->product_id)}}" class="link-product-add-cart">Xem nhanh</a>
+                                            <input type="button" class="link-product-add-cart xemnhanh" value="Xem nhanh"
+                                                data-toggle="modal" data-target="#xemnhanh" data-id_pro="{{ $pro->product_id }}"/>
                                         </div>
                                     </div>
                                     <!-- <span class="product-new-top">New</span> -->
                                 </div>
+
+                                <div id="xemnhanh" class="modal fade" role="dialog">
+                                    <div class="modal-dialog modal-lg">
+
+                                        <!-- Modal content-->
+                                        <div class="modal-content">
+                                            <!-- <div class="modal-header">
+                                            </div> -->
+                                            <div class="modal-body">
+                                                <div class="row">
+                                                    <div class="col-md-5">
+                                                        <span id="pro_quickview_image"></span>
+                                                        <span id="pro_quickview_gallery"></span>
+                                                    </div>
+                                                    <div class="col-md-7">
+                                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                                        <h5 id="pro_quickview_title"></h5>
+                                                        <small>Mã sản phẩm: <span id="pro_quickview_id"></span></small>
+                                                        <h4>
+                                                            <span id="pro_quickview_price"></span>
+                                                        </h4><hr/>
+
+                                                        <label>Số lượng:</label>
+                                                        <input type="number" name="qty" min="1" class="cart_product_qty" value="1" />
+                                                        <!-- <input type="hidden" name="proid_hidden" value="" /> -->
+
+                                                        <h5 class="detail">Mô tả sản phẩm:</h5>
+                                                        <span id="pro_quickview_desc"></span>
+                                                        <h5 class="detail">Hướng dẫn bảo quản:</h5>
+                                                        <span id="pro_quickview_content"></span>
+                                                        <input type="button" value="Mua ngay" class="btn-quickview" data-id_pro="">
+                                                        <!-- <p>hoặc <a href="{{URL::to('/chi-tiet-san-pham/'.$pro->product_slug)}}">Xem chi tiết</a></p> -->
+                                                    </div>
+                                                </div>                        
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
                                 <div class="item-info-product">
 
                                     <div class="info-product-price">
@@ -85,32 +126,25 @@
                                                     @endif
                                                 </div>
                                             </div>
-                                            <ul class="stars">
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-star" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
-                                                <li>
-                                                    <a href="#">
-                                                        <i class="fa fa-star-half-o" aria-hidden="true"></i>
-                                                    </a>
-                                                </li>
+
+                                            <ul class="list-inline" title="Average Rating">
+
+                                                @php
+                                                    $ratingg = round($pro->avg_star);
+                                                @endphp
+
+                                                @for($i = 1; $i <= 5; $i++)
+                                                    @php
+                                                        if($i <= $ratingg){
+                                                            $color = 'color:#ffcc00;';
+                                                        }
+                                                        else {
+                                                            $color = 'color:#ccc;';
+                                                        }
+                                                    @endphp
+                                                
+                                                    <li title="star_rating" style="{{$color}};" class="rating"> &#9733; </li>
+                                                @endfor
                                             </ul>
                                         </div>
                                         <div class="googles single-item hvr-outline-out">

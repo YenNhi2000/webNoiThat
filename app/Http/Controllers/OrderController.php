@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Coupon;
 use Barryvdh\DomPDF\PDF;
 use Illuminate\Http\Request;
@@ -30,17 +31,23 @@ class OrderController extends Controller
 
     public function all_order(){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
         
         // $all_order = Order::where('order_storage','0')->orderBy('order_id','desc')->get();
         $all_order = DB::table('tbl_order')
             ->join('tbl_customers', 'tbl_order.customer_id', '=', 'tbl_customers.customer_id')
             ->where('order_storage','0')->orderBy('order_id','desc')->paginate(5);
             
-        return view('admin.order.all_order')->with(compact('all_order'));
+        return view('admin.order.all_order')->with(compact('info', 'all_order'));
     }
 
     public function view_order($orderCode){
         $this->AuthLogin();
+
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
         
         // Thông tin giao hàng
         $order = Order::where('order_code', $orderCode)->get();
@@ -62,7 +69,7 @@ class OrderController extends Controller
         $coupon = Coupon::where('coupon_code', $money->order_coupon)->first();
         
         return view('admin.order.order_details')
-            ->with(compact('order_details', 'customer', 'shipping', 'payment', 'money', 'coupon', 'order'));
+            ->with(compact('info', 'order_details', 'customer', 'shipping', 'payment', 'money', 'coupon', 'order'));
     }
 
     public function update_order_qty(Request $request){
@@ -207,8 +214,11 @@ class OrderController extends Controller
     public function order_storage(){
         $this->AuthLogin();
 
+        // Thông tin admin
+        $info = Admin::where('admin_id', Session::get('admin_id'))->first();
+
         $storage = Order::where('order_storage','1')->orderBy('order_id','desc')->get();
-        return view('admin.order.storage')->with(compact('storage'));
+        return view('admin.order.storage')->with(compact('info','storage'));
     }
 
     public function restore_order($order_id){

@@ -156,71 +156,11 @@
                             <div class="tab3">
                                 <div class="single_page">
                                     <div class="col-sm-12">
-
-                                        @if(Session::get('customer_id') && $order_product != null)
-
-                                            <form>
-                                                @csrf
-                                                <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$pro->product_id}}">
-                                                <div id="comment"></div>
-                                            </form>
-
-                                            <p><b>Viết đánh giá của bạn</b></p>
-                                            
-                                        <!------Rating here---------->
-                                            @if ($cus_rating == null)
-                                                <ul class="list-inline rating"  title="Average Rating">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                    
-                                                    <li title="star_rating" id="{{$pro->product_id}}-{{$i}}" data-index="{{$i}}" 
-                                                        data-product_id="{{$pro->product_id}}" style="color: #ccc;" class="rating">
-                                                            &#9733;
-                                                    </li>
-                                                    @endfor
-                                                </ul>
-                                            @else
-                                                <ul class="list-inline rating"  title="Average Rating">
-                                                    @for($i = 1; $i <= 5; $i++)
-                                                        @php
-                                                            $ratingg = $cus_rating->rating;
-                                                            if($i <= $ratingg){
-                                                                $color = 'color:#ffcc00;';
-                                                            }
-                                                            else {
-                                                                $color = 'color:#ccc;';
-                                                            }   
-                                                        @endphp
-                                                    
-                                                    <li title="star_rating" id="{{$pro->product_id}}-{{$i}}" data-index="{{$i}}" 
-                                                        data-product_id="{{$pro->product_id}}" data-rating="{{$ratingg}}" style="{{$color}}" class="rating">
-                                                            &#9733;
-                                                    </li>
-                                                    @endfor
-                                                </ul>
-                                            @endif
-                                                
-                                            <form action="#">
-                                                <span>
-                                                    <input style="width:100%; margin-left: 0" type="text" class="comment_name" value="{{$cus_name->customer_name}}"/>
-                                                </span>
-                                                <textarea name="comment" class="comment_content" placeholder="Nội dung bình luận"></textarea>
-                                                <div id="notify_comment"></div>
-                                                
-                                                <button type="button" class="btn btn-default pull-right send-comment">
-                                                    Gửi bình luận
-                                                </button>
-
-                                            </form>
-
-                                        @else
-
-                                            <form>
-                                                @csrf
-                                                <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$pro->product_id}}">
-                                                <div id="comment"></div>
-                                            </form>
-
-                                        @endif
+                                        <form>
+                                            @csrf
+                                            <input type="hidden" name="comment_product_id" class="comment_product_id" value="{{$pro->product_id}}">
+                                            <div id="comment"></div>
+                                        </form>
                                     </div>
                                 </div>
                             </div>
@@ -253,12 +193,51 @@
                                                 <img src="{{URL::to('public/uploads/products/'.$pro->product_image)}}" class="img-fluid" alt="">
                                                 <div class="men-cart-pro">
                                                     <div class="inner-men-cart-pro">
-                                                        <a href="{{URL::to('/chi-tiet-san-pham/'.$pro->product_id)}}" class="link-product-add-cart">Xem nhanh</a>
+                                                        <input type="button" class="link-product-add-cart xemnhanh" value="Xem nhanh"
+                                                            data-toggle="modal" data-target="#xemnhanh" data-id_pro="{{ $pro->product_id }}"/>
                                                     </div>
                                                 </div>
                                             </div>
-                                            <div class="item-info-product">
 
+                                            <div id="xemnhanh" class="modal fade" role="dialog">
+                                                <div class="modal-dialog modal-lg">
+
+                                                    <!-- Modal content-->
+                                                    <div class="modal-content">
+                                                        <!-- <div class="modal-header">
+                                                        </div> -->
+                                                        <div class="modal-body">
+                                                            <div class="row">
+                                                                <div class="col-md-5">
+                                                                    <span id="pro_quickview_image"></span>
+                                                                    <span id="pro_quickview_gallery"></span>
+                                                                </div>
+                                                                <div class="col-md-7">
+                                                                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+
+                                                                    <h5 id="pro_quickview_title"></h5>
+                                                                    <small>Mã sản phẩm: <span id="pro_quickview_id"></span></small>
+                                                                    <h4>
+                                                                        <span id="pro_quickview_price"></span>
+                                                                    </h4><hr/>
+
+                                                                    <label>Số lượng:</label>
+                                                                    <input type="number" name="qty" min="1" class="cart_product_qty" value="1" />
+
+                                                                    <h5 class="detail">Mô tả sản phẩm:</h5>
+                                                                    <span id="pro_quickview_desc"></span>
+                                                                    <h5 class="detail">Hướng dẫn bảo quản:</h5>
+                                                                    <span id="pro_quickview_content"></span>
+                                                                    <input type="button" value="Mua ngay" class="btn-quickview" data-id_pro="">
+                                                                    <!-- <p>hoặc <a href="{{URL::to('/chi-tiet-san-pham/'.$pro->product_slug)}}">Xem chi tiết</a></p> -->
+                                                                </div>
+                                                            </div>                        
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="item-info-product">
                                                 <div class="info-product-price">
                                                     <div class="grid_meta">
                                                         <div class="product_price">

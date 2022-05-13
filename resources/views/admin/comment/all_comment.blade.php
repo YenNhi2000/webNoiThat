@@ -6,12 +6,6 @@
     <div class="bs-example widget-shadow" data-example-id="hoverable-table"> 
         <h4 class="text-center text-uppercase">Danh sách bình luận</h4>
         
-        <!-- <div class="row w3-res-tb">
-            <div class="col-sm-5 m-b-xs"> 
-            </div>
-            <div class="col-sm-7"></div>
-        </div>
-         -->
         <table class="table table-striped b-t b-light table-hover">
             <thead>
                 <tr>
@@ -44,6 +38,7 @@
                             @csrf
                         
                             @if($cmt->comment_status == 0)
+                                <input type="hidden" value="{{$cmt->ord_detail_id}}" name="ord_detail_id"/>
                                 <input type="hidden" value="{{$cmt->comment_pro_id}}" name="pro_id"/>
                                 <input type="hidden" value="{{$cmt->comment_id}}" name="cmt_id"/>
                                 <br/><textarea class="form-control" name="reply_comment" rows="5"></textarea>

@@ -21,7 +21,7 @@
                     <th>Họ tên KH</th>
                     <th>SĐT</th>
                     <th>Email</th>
-                    <th style="width:60px;"></th>
+                    <!-- <th style="width:60px;"></th> -->
                 </tr> 
             </thead>    
             <tbody> 
@@ -31,11 +31,11 @@
                     <td>{{ $val->customer_name }}</td>
                     <td>{{ $val->customer_phone }}</td>
                     <td>{{ $val->customer_email }}</td>
-                    <td>
+                    <!-- <td>
                         <a href="{{URL::to('/restore-customer/'.$val->customer_id)}}" class="active " onclick="return confirm('Bạn có muốn khôi phục khách hàng này không?')">
                             <i class="fa fa-undo" title="Khôi phục"></i>
                         </a>
-                    </td>
+                    </td> -->
                 </tr>
                 @endforeach
             </tbody> 

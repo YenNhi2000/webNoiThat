@@ -12,7 +12,7 @@
 
                     <input type="password" name="old_pass" class="lock" value="{{old('old_pass')}}" placeholder="Mật khẩu hiện tại" />
                     <input type="password" name="new_pass" class="lock" value="{{old('new_pass')}}" placeholder="Mật khẩu mới" />
-                    <input type="password" name="re_new_pass" class="lock" value="{{old('re_new_pass')}}" placeholder="Nhập lại mật khẩu">
+                    <input type="password" name="re_new_pass" class="lock" value="{{old('re_new_pass')}}" placeholder="Xác nhận mật khẩu">
 
                     <input type="submit" name="login" value="Cập nhật">
                     

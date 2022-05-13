@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\Session;
 use App\Models\Brand;
 use App\Models\Category;
 use App\Models\Customer;
+use App\Models\Gallery;
 use App\Models\Product;
 use App\Models\Type;
 use Illuminate\Support\Facades\Redirect;
@@ -21,18 +22,19 @@ class HomeController extends Controller
         $brand_pro = Brand::where('brand_status','1')->orderBy('brand_id','asc')->get();
         $type_pro = Type::where('type_status','1')->orderBy('type_id','asc')->get();
 
-        $new_product = Product::where('product_status','1')->orderBy('product_id','desc')->limit(8)->get();
-
-        $feature_pro = Product::where('product_status','1')->orderBy('avg_star','desc')->limit(8)->get();
-        
         // Seo  
         $url_canonical = $request->url();
 
         // Thông tin khách hàng
         $result = Customer::where('customer_id', Session::get('customer_id'))->first(); 
 
+        // Sản phẩm mới
+        $new_product = Product::where('product_status','1')->orderBy('product_id','desc')->limit(8)->get();
+
+        $feature_pro = Product::where('product_status','1')->orderBy('avg_star','desc')->limit(8)->get();
+        
         return view('pages.home')
-            ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'feature_pro', 'new_product', 'url_canonical', 'result'));
+            ->with(compact('cat_pro', 'brand_pro', 'type_pro', 'url_canonical', 'result', 'new_product', 'feature_pro'));
     }
 
     public function search(Request $request){

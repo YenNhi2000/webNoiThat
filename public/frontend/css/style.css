@@ -848,65 +848,6 @@ h5.detail {
     color: #ff4e00;
 }
 
-ul li.rating {
-    display: inline-block;
-    /* cursor:pointer; */
-    /* font-size:30px; */
-}
-
-.tab3 .single_page ul{
-    margin-bottom: 10px;
-}
-
-.tab3 .single_page ul li.rating {
-    display: inline-block;
-    cursor:pointer;  
-    font-size:30px;
-}
-
-.tab3 .single_page ul .list-inline>li {
-    padding-right: 5px;
-    padding-left: 5px
-}
-
-.tab3 .single_page input.comment_name{
-    background: #F0F0E9;
-    border: 0 none;
-    color: #A6A6A1;
-    font-family: 'Roboto', sans-serif;
-    font-size: 14px;
-    outline: medium none;
-    padding: 8px;
-    width: 100%;
-}
-
-.tab3 .single_page textarea.comment_content {
-    background: #F0F0E9;
-    border: medium none;
-    color: #A6A6A1;
-    height: 195px;
-    margin-bottom: 10px;
-    margin-top: 15px;
-    outline: medium none;
-    padding-left: 10px;
-    padding-top: 15px;
-    resize: none;
-    width: 100%;
-}
-
-.tab3 .single_page button.send-comment{
-    padding: 7px 12px;
-    margin-bottom: 10px;
-	color: #fff;
-	font-size: 1em;
-	background: #212121;
-	text-decoration: none;
-}
-
-.tab3 .single_page button.send-comment:hover{
-    background: #ff4e00;
-}
-
 /* //Chi tiết sp */
 
 input.btn-quickview {
@@ -2671,3 +2612,117 @@ button.btn.btn-danger.destroy {
     border-top:none;
     padding:0 25px 20px 25px;
 }
+.ctdh label{
+    font-weight: bold;
+}
+/* /Lịch sử đơn hàng */
+
+.body-web{
+    width: 1350px;
+    margin: 0 auto;
+}
+
+ul li.rating {
+    display: inline-block;
+}
+
+/* Đánh giá */
+button.active.cmt_rating {
+    padding: 7px 32px;
+    color: #fff;
+    font-size: 1em;
+    background: #ff4e00;
+    text-decoration: none;
+    cursor: pointer;
+    border: none;
+    outline: none;
+}
+
+button.active.view_rating {
+    padding: 7px 15px;
+    font-size: 1em;
+    background: #fff;
+    color: #ff4e00;
+    text-decoration: none;
+    cursor: pointer;
+    border: 1px solid #ff4e00;
+    outline: none;
+}
+
+button.active.cmt_rating i, button.active.view_rating i {
+    margin-right: 5px;
+}
+
+button.active.view_rating:hover{
+    background: #ff4e00;
+    color: #fff;
+}
+
+#danhgia .modal-content, #xemdanhgia .modal-content {
+    padding: 10px;
+    width: 550px;
+}
+
+#danhgia .modal-header, #xemdanhgia .modal-content{
+    padding-bottom: 10px;
+}
+
+#danhgia .modal-body, #xemdanhgia .modal-body{
+    padding: 1rem;
+    padding-top: 0;;
+}
+
+#danhgia ul, #xemdanhgia ul {
+    text-align: left;
+}
+
+#danhgia ul.list-inline li.rating, #xemdanhgia ul.list-inline li.rating {
+    margin-top: 0;
+}
+
+#danhgia ul li.rating, #xemdanhgia ul li.rating {
+    display: inline-block;
+    cursor:pointer;  
+    font-size:30px;
+}
+
+#danhgia ul .list-inline>li, #xemdanhgia ul .list-inline>li {
+    padding-right: 5px;
+    padding-left: 5px
+}
+
+#danhgia textarea.comment_content, #xemdanhgia textarea.comment_content {
+    background: #F0F0E9;
+    border: medium none;
+    color: #353434;
+    height: 150px;
+    outline: medium none;
+    padding-left: 10px;
+    padding-top: 15px;
+    resize: none;
+    width: 100%;
+}
+
+#danhgia .modal-footer, #xemdanhgia .modal-footer{
+    padding-top: 0;
+    border: none;
+}
+#danhgia button.send-comment{
+    padding: 7px 12px;
+	color: #fff;
+	font-size: 1em;
+	background: #212121;
+	text-decoration: none;
+    outline: none;
+}
+
+#danhgia button.send-comment:hover{
+    background: #ff4e00;
+}
+
+#danhgia a.btn.btn-default{
+    color: #353434;
+    background: #f2f2f2;
+    border: 1px solid #f2f2f2;
+}
+/* Đánh giá */

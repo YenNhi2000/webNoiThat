@@ -251,7 +251,7 @@ class CartController extends Controller
                     $order_details->product_id = $cart['product_id'];
                     $order_details->product_name = $cart['product_name'];
                     $order_details->product_price = $cart['product_price'];
-                    $order_details->product_quantity = $cart['product_qty'];
+                    $order_details->product_sales_qty = $cart['product_qty'];
                     $order_details->save();
                 }
             }
