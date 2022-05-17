@@ -7,18 +7,6 @@
             <h4>Thêm thư viện ảnh</h4>
         </div>
         <div class="form-body">
-        
-                @if (session()->has('message'))
-                    <div class="alert alert-success">
-                        {{ session()->get('message') }}
-                        {{ session()->put('message', null) }}
-                    </div>
-                @elseif(session()->has('error'))
-                    <div class="alert alert-danger">
-                        {{ session()->get('error') }}
-                        {{ session()->put('error', null) }}
-                    </div>
-                @endif
                 
             <span id="error_gallery"></span>
         
@@ -37,7 +25,7 @@
                     </div>
                 </div>
             </form>
-            <input type="hidden" class="pro_id" value="{{ $pro_id }}">
+            <input type="hidden" name="gla_pro_id" class="gla_pro_id" value="{{ $pro_id }}">
 
             <form>
                 @csrf

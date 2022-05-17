@@ -19,6 +19,7 @@ class Im_Cate implements ToModel
             'category_slug' => $row[1],
             'category_desc' => $row[2],
             'category_status' => $row[3],
+            'category_storage' => $row[4],
         ]);
     }   
 }

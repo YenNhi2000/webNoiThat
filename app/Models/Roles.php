@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Roles extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'name'	//các cột trong bảng Roles
     ];
     protected $primaryKey = 'roles_id';	//khóa chính

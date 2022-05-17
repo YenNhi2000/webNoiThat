@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Payment extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'payment_method', 'payment_status'	//các cột trong bảng shipping
     ];
     protected $primaryKey = 'payment_id';	//khóa chính

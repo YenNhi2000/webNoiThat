@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Statistical extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'order_date', 'sales', 'profit', 'quantity', 'total_order'	//các cột trong bảng Brand
     ];
     protected $primaryKey = 'statistical_id';	//khóa chính

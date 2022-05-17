@@ -59,20 +59,20 @@ class GalleryController extends Controller
             foreach($gallery as $key => $gal){
                 $i++;
                 $output.='
-                            <tr>
-                                <td>'.$i.'</td>
-                                <td contenteditable class="edit_gal_name" data-gal_id="'.$gal->gallery_id.'">'.$gal->gallery_name.'</td>
-                                <td>
-                                    <img src="'.url('public/uploads/gallery/'.$gal->gallery_image).'" 
-                                        width="120" height="120">
-                                </td>
-                                <td>
-                                    <button type="button" class="active delete delete-gallery" data-gal_id="'.$gal->gallery_id.'">
-                                        <i class="fa fa-times text-danger text" title="Xóa"></i>
-                                    </button>
-                                </td>
-                            </tr>
-                        ';
+                    <tr>
+                        <td>'.$i.'</td>
+                        <td contenteditable class="edit_gal_name" data-gal_id="'.$gal->gallery_id.'">'.$gal->gallery_name.'</td>
+                        <td>
+                            <img src="'.url('public/uploads/gallery/'.$gal->gallery_image).'" 
+                                width="120" height="120">
+                        </td>
+                        <td>
+                            <button type="button" class="active delete delete-gallery" data-gal_id="'.$gal->gallery_id.'">
+                                <i class="fa fa-times text-danger text" title="Xóa"></i>
+                            </button>
+                        </td>
+                    </tr>
+                ';
             }
         }else{
             $output.='
@@ -87,7 +87,7 @@ class GalleryController extends Controller
                 </form>
                 ';
         echo $output;
-
+        
         // <input type="file" class="file_image" style="width:40%" data-gal_id="'.$gal->gallery_id.'" id="file-'.$gal->gallery_id.'" name"file" accept="image/*">
     }
 

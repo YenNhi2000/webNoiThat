@@ -19,6 +19,7 @@ class Im_Brand implements ToModel
             'brand_slug' => $row[1],
             'brand_desc' => $row[2],
             'brand_status' => $row[3],
+            'brand_storage' => $row[4],
         ]);
     }
 }

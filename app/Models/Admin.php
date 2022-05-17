@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Admin extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'admin_email', 'admin_password', 'admin_name', 'admin_phone', 'admin_token'	//các cột trong bảng admin
     ];
     protected $primaryKey = 'admin_id';	//khóa chính

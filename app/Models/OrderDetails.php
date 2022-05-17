@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class OrderDetails extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'order_code', 'product_id', 'product_name', 'product_price', 'product_sales_qty', 'order_coupon'	//các cột trong bảng shipping
     ];
     protected $primaryKey = 'details_id';	//khóa chính

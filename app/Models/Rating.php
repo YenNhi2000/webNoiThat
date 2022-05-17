@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Rating extends Model
 {
     public $timestamps = false;	//set time to false (created_at, updated_at)
-    protected $filltable = [
+    protected $fillable = [
         'product_id', 'rating', 'customer_id', 'ord_detail_id'  //các cột trong bảng Rating
     ];
     protected $primaryKey = 'rating_id';	//khóa chính

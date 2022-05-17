@@ -19,6 +19,7 @@ class Im_Type implements ToModel
             'type_slug' => $row[1],
             'type_desc' => $row[2],
             'type_status' => $row[3],
+            'type_storage' => $row[4],
         ]);
     }
 }
